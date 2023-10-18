@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" type="text/css" href="../css/latest-topic.css">
     <title>Forum Interface - User Story</title>
     <!-- Add your CSS stylesheets and other meta tags here -->
 </head>
 <body>
-
     <!-- Navigation Bar -->
     <nav>
         <ul>
             <li><a href="#home">Home</a></li>
-            <li><a href="#latest-topics">Latest Topics</a></li>
+            <li><a href="./latest-topic.html">Latest Topics</a></li>
             <li><a href="#popular-topics">Popular Topics</a></li>
             <li><a href="#categories">Categories</a></li>
             <!-- Add more navigation links as needed -->
-            <li><a href="#login">Login</a></li>
-            <li><a href="#register">Register</a></li>
+            <li><a href="./login.html">Login</a></li>
+            <li><a href="./register.html">Register</a></li>
         </ul>
         <!-- Add search bar here -->
     </nav>
@@ -25,6 +26,19 @@
     <!-- Main Content -->
     <div id="content">
         <!-- Add sections for displaying latest topics, popular topics, categories, etc. -->
+        <!-- Display the username here -->
+        <p>Welcome, <span id="usernamePlaceholder"></span>!</p>
+
+        <!-- Add a section for community activities -->
+        <section class="community-activities">
+            <h2>Community Activities</h2>
+            <ul>
+                <li>New Member Registrations: 5 new members joined this week.</li>
+                <li>Upcoming Events: Join us for the Halloween Party on October 31st.</li>
+                <li>Birthdays: Today is John's birthday. Send your best wishes!</li>
+                <!-- Add more community activities as needed -->
+            </ul>
+        </section>
     </div>
 
     <!-- Footer -->
@@ -33,5 +47,30 @@
         <!-- Add links to rules/guidelines and social media sharing features -->
     </footer>
 
+    <script>
+        // Retrieve the username from localStorage
+        const username = localStorage.getItem("username");
+        if (username) {
+            document.getElementById("usernamePlaceholder").textContent = username;
+        }
+        fetch('./latest-topic.html')
+            .then(response => response.text())
+            .then(data => {
+                const tempElement = document.createElement('div');
+                tempElement.innerHTML = data;
+
+                // Select and insert the content within the specified section
+                const contentToInsert = tempElement.querySelector('#latest-topics-content');
+                if (contentToInsert) {
+                    // Remove "Show Content" buttons and associated event handlers
+                    const buttons = contentToInsert.querySelectorAll('.toggle-button');
+                    buttons.forEach(button => button.remove());
+
+                    // Insert the content (excluding the buttons)
+                    document.getElementById('content').appendChild(contentToInsert);
+                }
+            }).catch(error => console.error(error));
+
+    </script>
 </body>
 </html>
