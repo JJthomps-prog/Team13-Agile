@@ -24,9 +24,34 @@
 
     <!-- Main Content -->
     <div id="content">
-        <!-- Add sections for displaying latest topics, popular topics, categories, etc. -->
-    </div>
+        <!-- Section to Create Profiles -->
+        <section id="create-profile">
+            <h2>Create Profile</h2>
+            <form action="/create_profile" method="POST">
+                <label for="profileType">Profile Type:</label>
+                <select id="profileType" name="profileType">
+                    <option value="business">Business</option>
+                    <option value="landmark">Landmark</option>
+                    <option value="festival">Festival</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <br>
+                <label for="profileName">Name:</label>
+                <input type="text" id="profileName" name="profileName" required>
+                <br>
+                <label for="profileDescription">Description:</label>
+                <textarea id="profileDescription" name="profileDescription" required></textarea>
+                <br>
+                <input type="submit" value="Create Profile">
+            </form>
+        </section>
 
+        <!-- Section to Display and Review Profiles -->
+        <section id="profiles">
+            <h2>Profiles</h2>
+            <!-- Display profiles here. You might fetch and display these dynamically with JavaScript -->
+        </section>
+    </div>
     <!-- Footer -->
     <footer>
         <!-- Add sections for community activities, forum statistics, etc. -->
