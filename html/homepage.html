@@ -29,7 +29,10 @@
         <!-- Add sections for displaying latest topics, popular topics, categories, etc. -->
         <!-- Display the username here -->
         <p>Welcome, <span id="usernamePlaceholder"></span>!</p>
-
+        <section class="announcements">
+            <h2>Community Announcements</h2>
+            <p>Important announcements and rules will be displayed here.</p>
+        </section>        
         <!-- Add a section for community activities -->
         <section class="community-activities">
             <h2>Community Activities</h2>
@@ -80,6 +83,14 @@
     <script>
         // Retrieve the username from localStorage
         const username = localStorage.getItem("username");
+        document.addEventListener("DOMContentLoaded", function () {
+        // Replace this with your logic to fetch and update announcements.
+        const announcementsSection = document.querySelector(".announcements");
+        const announcementsContent = "Important announcement: Please read the forum rules. Don't put advertisment in replies.";
+
+        // Update the content in the Announcements Section
+        announcementsSection.querySelector("p").textContent = announcementsContent;
+    });
         if (username) {
             document.getElementById("usernamePlaceholder").textContent = username;
         }
