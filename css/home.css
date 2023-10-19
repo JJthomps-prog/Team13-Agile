@@ -1,0 +1,86 @@
+/* Resetting some default styles */
+body, ul, li {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Navigation bar styles */
+nav {
+    background-color: #333;
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+}
+
+nav li {
+    margin: 0 15px; /* Increased margin for better spacing */
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+    padding: 8px 15px; /* Increased padding for better clickability */
+    border-radius: 5px; /* Slightly rounded corners for buttons */
+    transition: background-color 0.3s;
+    font-weight: bold; /* Make the text bolder for better readability */
+}
+
+nav a:hover {
+    background-color: #555;
+}
+
+/* Main Content */
+#content {
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: 400px;
+}
+
+/* Footer */
+footer {
+    background-color: #222;
+    color: white;
+    padding: 20px 0; /* Increased padding for better separation */
+    text-align: center;
+}
+
+footer a {
+    color: #ffa500;
+    text-decoration: none;
+    padding: 0 10px; /* Increased padding for better clickability */
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+/* Styles for Community Activities */
+.community-activities {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.community-activities h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.community-activities ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    color: #555;
+}
+
+.community-activities li {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}

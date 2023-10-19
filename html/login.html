@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="../css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <script>
+            const loginForm = document.getElementById("login-form");
+            loginForm.addEventListener("submit", function (event) {
+                event.preventDefault(); // Prevent the form from actually submitting
+                const username = document.getElementById("username").value; // Get the username value
+                // Store the username in localStorage
+                localStorage.setItem("username", username);
+                // Redirect to the homepage after successful login
+                window.location.href = "./homepage.html";
+            });
+        </script>
+    </div>
+</body>
+</html>

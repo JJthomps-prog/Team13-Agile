@@ -1,0 +1,88 @@
+/* styles.css */
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #f3f3f3;
+    color: rgb(129, 173, 104);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-color: #2ecc71;
+    color: #fff;
+    padding: 10px 0;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.topics {
+    background-color: #fff;
+    padding: 40px 0;
+}
+
+.topic-list {
+    list-style: none;
+    padding: 0;
+}
+
+.topic-list li {
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.topic-list li h3 {
+    font-size: 20px;
+}
+
+.topic-list li p {
+    margin: 5px 0;
+}
+
+/* Styling for navigation links without underlines */
+.no-underline {
+    text-decoration: none;
+    color: #bccc2e; /* Change the link color as desired */
+    font-size: 25px; /* Change the font size as desired */
+}
+.replies {
+    list-style-type: decimal; /* Use decimal numbers for list items */
+    margin-left: 20px; /* Add an indentation to the left of each reply */
+    padding: 0; /* Reset padding for list items */
+}
+
+.replies .reply {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    border-left: 3px solid #007BFF; /* Add a colored border to the left of each reply */
+    padding-left: 10px; /* Add spacing between the border and reply text */
+}
+
+/* Style even and odd replies with different background colors */
+.replies .reply:nth-child(even) {
+    background-color: #f4f4f4; /* Light gray for even replies */
+}
+
+.replies .reply:nth-child(odd) {
+    background-color: #e0e0e0; /* Slightly darker gray for odd replies */
+}
