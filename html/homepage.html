@@ -7,6 +7,47 @@
     <link rel="stylesheet" type="text/css" href="../css/latest-topic.css">
     <title>Forum Interface - User Story</title>
     <!-- Add your CSS stylesheets and other meta tags here -->
+    <style>
+        /* Add some basic styles for the dropdown menu */
+        .dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Add some basic styles for the search bar */
+        #search-bar {
+            margin-top: 10px;
+            padding: 8px;
+            width: 300px;
+        }
+
+        /* Add some basic styles for the announcements */
+        #announcements {
+            background-color: #92918c; /* Yellow background for visibility */
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        #announcements h2 {
+            color: #333;
+        }
+
+        #announcements p {
+            color: #555;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -15,13 +56,29 @@
             <li><a href="#home">Home</a></li>
             <li><a href="./latest-topic.html">Latest Topics</a></li>
             <li><a href="#popular-topics">Popular Topics</a></li>
-            <li><a href="#categories">Categories</a></li>
+            <li class="dropdown">
+                <a href="#categories">Categories</a>
+                <div class="dropdown-content">
+                    <!-- List of categories with links -->
+                    <a href="#events">Events</a>
+                    <a href="#landmarks">Landmarks</a>
+                    <a href="#posts">Posts</a>
+                    <!-- Add more categories as needed -->
+                </div>
+            </li>
             <!-- Add more navigation links as needed -->
             <li><a href="./login.html">Login</a></li>
             <li><a href="./register.html">Register</a></li>
         </ul>
         <!-- Add search bar here -->
+        <li><input type="text" id="search-bar" placeholder="Search..."></li>
     </nav>
+
+    <!-- Announcements Section -->
+    <section id="announcements">
+        <h2>Community Announcements</h2>
+        <p>Important community announcements or rules will be displayed here. Stay tuned for updates!</p>
+    </section>
 
     <!-- Main Content -->
     <div id="content">
