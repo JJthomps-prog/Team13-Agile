@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DATABASE_URL:localhost}:5432/community
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:secret}
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: ${INIT_DB:always}
+      schema-locations: database-init.sql
