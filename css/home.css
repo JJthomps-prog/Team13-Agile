@@ -84,3 +84,9 @@ footer a:hover {
     font-size: 1.1em;
     margin-bottom: 10px;
 }
+.announcements {
+    background-color: #f00; /* Customize the background color */
+    color: #fff; /* Customize the text color */
+    padding: 15px; /* Add some padding for spacing */
+    text-align: center; /* Center-align text */
+}

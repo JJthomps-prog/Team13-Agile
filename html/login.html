@@ -20,15 +20,33 @@
             </div>
             <button type="submit">Login</button>
         </form>
+        <p id="error-message" style="color: red;"></p>
         <script>
             const loginForm = document.getElementById("login-form");
+            const errorMessage = document.getElementById("error-message");
+
             loginForm.addEventListener("submit", function (event) {
                 event.preventDefault(); // Prevent the form from actually submitting
-                const username = document.getElementById("username").value; // Get the username value
-                // Store the username in localStorage
-                localStorage.setItem("username", username);
-                // Redirect to the homepage after successful login
-                window.location.href = "./homepage.html";
+
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+
+                // Retrieve the users array from localStorage
+                const users = JSON.parse(localStorage.getItem("users")) || [];
+
+                // Find the user by username
+                const user = users.find(u => u.username === username);
+
+                if (!user) {
+                    errorMessage.textContent = "User not found";
+                } else if (user.password !== password) {
+                    errorMessage.textContent = "Incorrect password";
+                } else {
+                    // Successful login, store the username in sessionStorage (not localStorage)
+                    sessionStorage.setItem("username", username);
+                    // Redirect to the homepage after successful login
+                    window.location.href = "./homepage.html";
+                }
             });
         </script>
     </div>

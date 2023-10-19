@@ -29,8 +29,8 @@
                     <option value="mother-maiden-name">What is your mother's maiden name?</option>
                     <option value="first-car">What was the make and model of your first car?</option>
                 </select>
+                <input type="security-question-answer" id="security-question-answer" name="security-question-answer" required>
             </div>
-            <input type="security-question" id="security-question" name="security-question" required>
             <button type="submit">Register</button>
         </form>
         <p>Already have an account? <a href="./login.html">Login</a></p>
@@ -40,7 +40,31 @@
 
             registrationForm.addEventListener("submit", function (event) {
                 event.preventDefault(); // Prevent the form from actually submitting
-                // Process the registration data here (e.g., send to a server)
+
+                // Get user inputs
+                const username = document.getElementById("username").value;
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+                const securityQuestion = document.getElementById("security-question").value;
+                const securityQuestionAnswer = document.getElementById("security-question-answer").value;
+                // Create a user object
+                const user = {
+                    username,
+                    email,
+                    password,
+                    securityQuestion,
+                    securityQuestionAnswer
+                };
+
+                // Retrieve the existing user array from localStorage or create an empty array
+                const users = JSON.parse(localStorage.getItem("users")) || [];
+
+                // Add the new user to the array
+                users.push(user);
+
+                // Save the updated user array back to localStorage
+                localStorage.setItem("users", JSON.stringify(users));
+
                 // After successful registration, redirect to the login page
                 window.location.href = "./login.html";
             });
