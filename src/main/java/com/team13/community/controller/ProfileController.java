@@ -17,14 +17,15 @@ public class ProfileController {
     public Profile createProfile(@RequestBody Profile profile) {
         return profileService.createProfile(profile);
     }
-
-    @GetMapping("/{id}")
-    public Optional<Profile> getProfile(@PathVariable Long id) {
-        return profileService.getProfile(id);
-    }
-
     @GetMapping("/test")
     public String test(){
         return "The profiles page test!";
     }
+
+    @GetMapping("/{id:[\\d]+}")
+    public Optional<Profile> getProfile(@PathVariable Long id) {
+        return profileService.getProfile(id);
+    }
+
+
 }

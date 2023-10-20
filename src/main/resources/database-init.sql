@@ -31,7 +31,5 @@ CREATE TABLE reviews
     date_created TIMESTAMP
 );
 
-
-
 INSERT INTO users (id, password, enabled, first_name, last_name)
 VALUES (11, 'secret', TRUE, 'sj', 'yu');

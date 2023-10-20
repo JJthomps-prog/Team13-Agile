@@ -24,8 +24,7 @@ public class ReviewController {
     }
 
     @GetMapping("/test")
-    public String test(){
+    public String test() {
         return "The reviews page test!";
     }
-
 }
