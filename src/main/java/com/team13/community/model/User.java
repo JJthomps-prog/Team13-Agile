@@ -1,20 +1,16 @@
 package com.team13.community.model;
 
-public class User {
-    private Long id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
-    private String username;
-    private String password; // Consider encrypting this before storing
-
-    private boolean enabled;
-    private String firstName;
-    private String lastName;
-    private String email;
-
-    public void setId(Long id){
-        this.id = id;
-    }
-    public Long getId(){
-        return this.id;
-    }
+@Table("users")
+public record User(
+        @Id Long id,
+        String username,
+        String password,
+        boolean enabled,
+        String firstName,
+        String lastName,
+        String email
+) {
 }

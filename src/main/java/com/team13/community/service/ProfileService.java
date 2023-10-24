@@ -1,6 +1,6 @@
 package com.team13.community.service;
 
-import com.team13.community.Repository.ProfileRepository;
+import com.team13.community.repository.ProfileRepository;
 import com.team13.community.model.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

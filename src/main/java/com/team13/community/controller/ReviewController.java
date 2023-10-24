@@ -13,10 +13,6 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    @PostMapping
-    public Review submitReview(@RequestBody Review review) {
-        return reviewService.submitReview(review);
-    }
 
     @GetMapping("/profile/{profileId}")
     public List<Review> getReviewsForProfile(@PathVariable Long profileId) {

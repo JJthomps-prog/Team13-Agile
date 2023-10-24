@@ -1,4 +1,4 @@
-package com.team13.community.Repository;
+package com.team13.community.repository;
 
 import com.team13.community.model.User;
 import org.springframework.data.repository.CrudRepository;

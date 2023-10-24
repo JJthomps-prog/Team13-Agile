@@ -1,10 +1,9 @@
 package com.team13.community.service;
 
 import com.team13.community.model.User;
-import com.team13.community.Repository.UserRepository;
+import com.team13.community.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
