@@ -6,3 +6,7 @@ The envisioned regional social platform aims to foster community engagement and 
 ## Authors
 
 Created by Team13 of CS555.
+
+## install node.js 
+## 'npm install' in terminal before start 
+## 'npm start' in terminal
