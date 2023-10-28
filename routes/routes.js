@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const allData = require('../data/alldata');
 
-// Events Page
+router.get('/', (req, res) => {
+    res.render('homepage');
+  });
+
 router.get('/categories/events', (req, res) => {
   const eventData = [
     { title: 'Event Title 1', date: 'January 1, 2024', time: '6:00 PM - 9:00 PM', location: 'Venue ABC', description: 'Lorem ipsum...' },
@@ -11,7 +15,6 @@ router.get('/categories/events', (req, res) => {
   res.render('events', { events: eventData });
 });
 
-// Latest Topics Page
 router.get('/latest-topic', (req, res) => {
   const topicsData = [
     { title: 'Topic Title 1', author: 'John Doe', replies: 5, content: 'That sounds like a fun event to attend!' },
@@ -22,17 +25,14 @@ router.get('/latest-topic', (req, res) => {
   res.render('latest-topic', { topics: topicsData });
 });
 
-// Popular Topics Page
 router.get('/latest-topic/popular-topics', (req, res) => {
   // Fetch and render popular topics here
 });
 
-// Posts Page
 router.get('/categories/posts', (req, res) => {
   res.render('posts');
 });
 
-// Landmarks Page
 router.get('/categories/landmarks', (req, res) => {
   res.render('landmarks');
 });
