@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
 const configRoutes = require('./routes');
+const initializeApp  = require('firebase/app');
+const { getFirestore, collection, getDocs } = require('firebase/firestore/lite');
+
 
 const app = express();
 
