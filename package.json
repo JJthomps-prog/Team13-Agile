@@ -4,13 +4,13 @@
     "description": "A Firebase, Express, Node.js, and Firestore-based web app",
     "main": "app.js",
     "scripts": {
-      "start": "node app.js"
+        "start": "node app.js"
     },
     "dependencies": {
-      "express": "^4.17.1",
-      "body-parser": "^1.19.0",
-      "firebase-admin": "^10.0.0",
-      "ejs": "^3.1.6"
+        "body-parser": "^1.19.0",
+        "ejs": "^3.1.6",
+        "express": "^4.17.1",
+        "firebase": "^10.5.2",
+        "firebase-admin": "^10.0.0"
     }
-  }
-  
+}

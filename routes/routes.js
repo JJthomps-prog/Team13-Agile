@@ -38,7 +38,9 @@ router.get('/categories/landmarks', (req, res) => {
 });
 
 // Login Page
-router.get('/login', (req, res) => {
+router.get('/login', async (req, res) => {
+  console.log(allData.getUsers());//return db function in /data/alldata.js
+  await allData.createUser('sdsadas','wadsdwads');
   res.render('login');
 });
 
