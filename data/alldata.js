@@ -120,6 +120,102 @@ async function deleteJob(Jobname){
     }
 }
 
+//EventsFunction Example
+//"YYYY-MM-DD"
+function isValidDateFormat(dateString) {
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    return dateRegex.test(dateString);
+}
+
+//"HH:mm"
+function isValidTimeFormat(timeString) {
+    const timeRegex = /^([01]\d|2[0-3]):[0-5]\d$/;
+    return timeRegex.test(timeString);
+}
+
+//determine if the event is valid
+function isValidEvent(event) {
+    if (
+        event &&
+        event.eventname &&
+        event.eventdate &&
+        event.eventtime &&
+        event.eventlocation &&
+        event.eventdescription &&
+        isValidDateFormat(event.eventdate) &&
+        isValidTimeFormat(event.eventtime)
+    ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+async function getEvents(){
+    try {
+        const EventsCol = collection(db, 'events');//get events collection
+        const events = await getDocs(EventsCol);
+        const eventlist = events.docs.map(doc => doc.data());//convert to list type
+        return eventlist; // return a list contain all events
+    } catch (error) {
+        console.error("Error fetching events:", error);
+        throw 'No Events Found';
+    }
+}
+
+async function getEventByEventName(Eventname) {
+    try {
+        const EventsCol = collection(db, 'events');
+        const eventQuery = query(EventsCol, where("eventname", "==", Eventname));// find eventname = Eventname in events collection
+        const event = await getDocs(eventQuery);
+        const singleevent = event.docs.map(doc => doc.data());
+        return singleevent;
+    } catch (error) {
+        console.error("Error in getEventByEventName:", error);
+        throw 'No Event Found';
+    }
+}
+
+async function createEvent(Eventname, Eventdate, Eventtime, Eventlocation, Eventdescription){
+    try {
+        await addDoc(collection(db,"events"),{
+            eventname:Eventname,
+            eventdate:Eventdate,
+            eventtime:Eventtime,
+            eventlocation:Eventlocation,
+            eventdescription:Eventdescription
+        })
+        if (isValidEvent(eventObject)) {
+            await addDoc(collection(db, "events"), eventObject);
+            return { Eventname };
+        } else {
+            throw 'Invalid Event';
+        }
+    } catch (error) {
+        console.error("Error in getEventByEventName:", error);
+        throw 'Create Event Fail';
+    }
+}
+
+async function deleteEvent(Eventname){
+    try {
+        const EventsCol = collection(db, 'events');
+        const eventQuery = query(EventsCol, where("Eventname", "==", Eventname));
+        const eventsSnapshot = await getDocs(eventQuery);
+        
+        if (eventsSnapshot.empty) {
+            throw new Error('No Event Found');
+        }
+
+        const eventId = eventsSnapshot.docs[0].id;
+        await deleteDoc(doc(db, 'events', eventId));
+        return {Eventname};
+    } catch (error) {
+        console.error("Error in deleteEvent:", error);
+        throw error;
+    }
+}
+
 
 module.exports = {
     getUsers,
@@ -127,5 +223,10 @@ module.exports = {
     createUser,
     getJobs,
     getJobByJobName,
-    createJob
+    createJob,
+    deleteJob,
+    getEvents,
+    getEventByEventName,
+    createEvent,
+    deleteEvent
 }
