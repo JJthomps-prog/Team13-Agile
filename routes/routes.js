@@ -39,8 +39,11 @@ router.get('/categories/landmarks', (req, res) => {
 
 // Login Page
 router.get('/login', async (req, res) => {
-  console.log(allData.getUsers());//return db function in /data/alldata.js
-  await allData.createUser('sdsadas','wadsdwads');
+  // await allData.createNews('asdasdasd','asdasdasdasd');
+  //console.log(await allData.getNews());
+  // console.log(await allData.getNewsById('Jl84k5P4O2DNW8bGxvg6'));
+  //await allData.deleteNewsById("U6eULwskmyuiFaVGQry4");
+  //console.log(await allData.getNews());
   res.render('login');
 });
 

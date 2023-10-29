@@ -1,6 +1,6 @@
 //write db function here
 const { initializeApp } = require('firebase/app');
-const { getFirestore, collection, getDocs , query, where, addDoc} = require('firebase/firestore/lite');
+const { doc,getFirestore, collection, getDocs , query, where, addDoc, deleteDoc, updateDoc} = require('firebase/firestore/lite');
 const admin = require('firebase-admin');
 const express = require('express');
 
@@ -217,6 +217,76 @@ async function deleteEvent(Eventname){
 }
 
 
+//news data
+async function getNews(){
+    try {
+        const NewsCol = collection(db, 'news');//get users collection
+        const news = await getDocs(NewsCol);
+        const newlist = news.docs.map(doc => doc.data());//convert to list type
+        return newlist; // return a list contain all users
+    } catch (error) {
+        throw 'No news found'
+    }
+}
+
+async function getNewsById(id){
+    try{
+        if(typeof(id)!=='string' && id.trim() === ''){
+            throw 'invalid id';
+        }
+        const NewsCol = collection(db, 'news');
+        const newQuery = query(NewsCol, where("id", "==", id));// find eventname = Eventname in events collection
+        const news = await getDocs(newQuery);
+        const singlenews= news.docs.map(doc => doc.data());
+        return singlenews;
+    } catch (error) {
+        console.error("Error in getNewsById:", error);
+        throw error;
+    }
+}
+
+async function createNews(Title,Description){
+    try {
+        if(typeof(Title) !== 'string' || typeof(Description)!=='string'){
+            throw 'Must be strings'
+        }
+        if(Title.trim() === '' || Description.trim() === ''){
+            throw 'Must not be empty'
+        }
+        const docRef = await addDoc(collection(db,"news"),{
+            title:Title,
+            description:Description,
+            id: ''
+        })
+        const newDocId = docRef.id;
+
+        await updateDoc(doc(db, 'news', newDocId), {
+            id: newDocId
+        });
+        return { id: newDocId, title: Title, description: Description };
+    } catch (error) {
+        console.error("Error in create News:", error);
+        throw 'Create News Fail';
+    }
+}
+
+async function deleteNewsById(id){
+    try {
+        const NewsCol = collection(db, 'news');
+        const newQuery = query(NewsCol, where("id", "==", id));
+        const newsSnapshot = await getDocs(newQuery);
+        
+        if (newsSnapshot.empty) {
+            throw new Error('No Event Found');
+        }
+        await deleteDoc(doc(db, 'news', id));
+        return 'delete success';
+    } catch (error) {
+        console.error("Error in deleteEvent:", error);
+        throw error;
+    }
+}
+
 module.exports = {
     getUsers,
     getUserByUserName,
@@ -228,5 +298,9 @@ module.exports = {
     getEvents,
     getEventByEventName,
     createEvent,
-    deleteEvent
+    deleteEvent,
+    getNews,
+    getNewsById,
+    createNews,
+    deleteNewsById
 }
