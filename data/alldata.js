@@ -73,7 +73,7 @@ async function getJobs(){
 async function getJobByJobName(Jobname) {
     try {
         const UsersCol = collection(db, 'jobs');
-        const jobQuery = query(UsersCol, where("Jobname", "==", Jobname));// find username = Username in users collection
+        const jobQuery = query(UsersCol, where("Jobname", "==", Jobname));// find Jobname = Jobname in jobs collection
         const jobs = await getDocs(jobQuery);
         const singlejob = jobs.docs.map(doc => doc.data());
         return singlejob;
@@ -101,6 +101,24 @@ async function createJob(Jobname,Location,Salary,Description,Requirement,Jobtype
     }
 }
 
+async function deleteJob(Jobname){
+    try {
+        const JobsCol = collection(db, 'jobs');
+        const jobQuery = query(JobsCol, where("Jobname", "==", Jobname));
+        const jobsSnapshot = await getDocs(jobQuery);
+        
+        if (jobsSnapshot.empty) {
+            throw new Error('No Job Found');
+        }
+
+        const jobId = jobsSnapshot.docs[0].id;
+        await deleteDoc(doc(db, 'jobs', jobId));
+        return {Jobname};
+    } catch (error) {
+        console.error("Error in deleteJob:", error);
+        throw error;
+    }
+}
 
 
 module.exports = {
