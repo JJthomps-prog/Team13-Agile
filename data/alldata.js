@@ -1,6 +1,6 @@
 //write db function here
 const { initializeApp } = require('firebase/app');
-const { doc,getFirestore, collection, getDocs , query, where, addDoc, deleteDoc, updateDoc} = require('firebase/firestore/lite');
+const { doc,getFirestore, collection, getDocs , query, where, addDoc, deleteDoc, updateDoc, getDoc} = require('firebase/firestore/lite');
 const admin = require('firebase-admin');
 const express = require('express');
 
@@ -70,13 +70,17 @@ async function getJobs(){
     }
 }
 
-async function getJobByJobName(Jobname) {
+async function getJobById(Jobname) {
     try {
-        const UsersCol = collection(db, 'jobs');
-        const jobQuery = query(UsersCol, where("Jobname", "==", Jobname));// find Jobname = Jobname in jobs collection
-        const jobs = await getDocs(jobQuery);
-        const singlejob = jobs.docs.map(doc => doc.data());
-        return singlejob;
+        const jobDoc = doc(db, 'jobs', id);
+        const jobSnapshot = await getDoc(jobDoc);
+
+        if (!jobSnapshot.exists()) {
+            throw new Error('No Job Found');
+        }
+
+        const jobData = jobSnapshot.data();
+        return jobData;
     } catch (error) {
         console.error("Error in getUserByUserName:", error);
         throw 'No Job Found';
@@ -101,19 +105,21 @@ async function createJob(Jobname,Location,Salary,Description,Requirement,Jobtype
     }
 }
 
-async function deleteJob(Jobname){
+async function deleteJob(id){
     try {
-        const JobsCol = collection(db, 'jobs');
-        const jobQuery = query(JobsCol, where("Jobname", "==", Jobname));
-        const jobsSnapshot = await getDocs(jobQuery);
+
+        const jobDoc = doc(db, 'jobs', id);
+        const jobSnapshot = await getDoc(jobDoc);
         
-        if (jobsSnapshot.empty) {
+        if (!jobSnapshot.exists()) {
             throw new Error('No Job Found');
         }
 
-        const jobId = jobsSnapshot.docs[0].id;
-        await deleteDoc(doc(db, 'jobs', jobId));
-        return {Jobname};
+
+        await deleteDoc(jobDoc);
+        
+        return {message: 'Job Deleted Successfully'};
+        
     } catch (error) {
         console.error("Error in deleteJob:", error);
         throw error;
@@ -292,7 +298,7 @@ module.exports = {
     getUserByUserName,
     createUser,
     getJobs,
-    getJobByJobName,
+    getJobById,
     createJob,
     deleteJob,
     getEvents,
