@@ -58,10 +58,56 @@ async function createUser(Username,Password){
 }
 
 
+async function getJobs(){
+    try {
+        const JobsCol = collection(db, 'jobs');//get users collection
+        const jobs = await getDocs(JobsCol);
+        const joblist = jobs.docs.map(doc => doc.data());//convert to list type
+        return joblist; // return a list contain all users
+    } catch (error) {
+        console.error("Error fetching jobs:", error);
+        throw 'No jobs Found';
+    }
+}
+
+async function getJobByJobName(Jobname) {
+    try {
+        const UsersCol = collection(db, 'jobs');
+        const jobQuery = query(UsersCol, where("Jobname", "==", Jobname));// find username = Username in users collection
+        const jobs = await getDocs(jobQuery);
+        const singlejob = jobs.docs.map(doc => doc.data());
+        return singlejob;
+    } catch (error) {
+        console.error("Error in getUserByUserName:", error);
+        throw 'No Job Found';
+    }
+}
+
+async function createJob(Jobname,Location,Salary,Description,Requirement,Jobtype,Jobstatus){
+    try {
+        await addDoc(collection(db,"jobs"),{
+            Jobname:Jobname,
+            Location:Location,
+            Salary:Salary,
+            Description:Description,
+            Requirement:Requirement,
+            Jobtype:Jobtype,
+            Jobstatus:Jobstatus
+        })
+        return {Jobname}
+    } catch (error) {
+        console.error("Error in createJob:", error);
+        throw 'Create Job Fail';
+    }
+}
+
 
 
 module.exports = {
     getUsers,
     getUserByUserName,
-    createUser
+    createUser,
+    getJobs,
+    getJobByJobName,
+    createJob
 }
