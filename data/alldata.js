@@ -72,59 +72,72 @@ async function getJobs(){
 
 async function getJobById(id) {
     try {
-        const jobDoc = doc(db, 'jobs', id);
-        const jobSnapshot = await getDoc(jobDoc);
-
-        if (!jobSnapshot.exists()) {
-            throw new Error('No Job Found');
+        if(typeof(id)!=='string' && id.trim() === ''){
+            throw 'invalid id';
         }
-
-        const jobData = jobSnapshot.data();
-        return jobData;
+        const Col = collection(db, 'news');
+        const Query = query(Col, where("id", "==", id));// find eventname = Eventname in events collection
+        const job = await getDocs(Query);
+        const singlejob= job.docs.map(doc => doc.data());
+        return singlejob;
     } catch (error) {
         console.error("Error in getJobById:", error);
         throw 'No Job Found';
     }
 }
 
+
+
 async function createJob(Jobname,Location,Salary,Description,Requirement,Jobtype,Jobstatus){
     try {
-        await addDoc(collection(db,"jobs"),{
+        if(typeof(Jobname) !== 'string' || typeof(Location)!=='string' || typeof(Salary)!=='string' || typeof(Description)!=='string' || typeof(Requirement)!=='string' || typeof(Jobtype)!=='string' || typeof(Jobstatus)!=='string'){
+            throw 'Must be strings'
+        }
+        if(Jobname.trim() === '' || Location.trim() === ''|| Salary.trim() === ''|| Description.trim() === ''|| Requirement.trim() === ''|| Jobtype.trim() === ''|| Jobstatus.trim() === ''){
+            throw 'Must not be empty'
+        }
+        const docRef = await addDoc(collection(db,"jobs"),{
             Jobname:Jobname,
             Location:Location,
             Salary:Salary,
             Description:Description,
             Requirement:Requirement,
             Jobtype:Jobtype,
-            Jobstatus:Jobstatus
+            Jobstatus:Jobstatus,
+            id: ''
         })
-        return {Jobname}
+        const newDocId = docRef.id;
+        await updateDoc(doc(db, 'jobs', newDocId), {
+            id: newDocId
+        });
+        return {id: newDocId, Jobname:Jobname, Location:Location, Salary:Salary, Description:Description, Requirement:Requirement, Jobtype:Jobtype, Jobstatus:Jobstatus};
     } catch (error) {
         console.error("Error in createJob:", error);
         throw 'Create Job Fail';
     }
 }
 
-async function deleteJob(id){
+
+async function deleteJobById(id){
     try {
 
-        const jobDoc = doc(db, 'jobs', id);
-        const jobSnapshot = await getDoc(jobDoc);
+        const Col = collection(db, 'jobs');
+        const Query = query(Col, where("id", "==", id));
+        const Snapshot = await getDocs(Query);
         
-        if (!jobSnapshot.exists()) {
-            throw new Error('No Job Found');
+        if (Snapshot.empty) {
+            throw new Error('No job Found');
         }
-
-
-        await deleteDoc(jobDoc);
-        
-        return {message: 'Job Deleted Successfully'};
+        await deleteDoc(doc(db, 'jobs', id));
+        return 'delete success';
         
     } catch (error) {
         console.error("Error in deleteJob:", error);
         throw error;
     }
 }
+
+
 
 //EventsFunction Example
 //"YYYY-MM-DD"
@@ -300,7 +313,7 @@ module.exports = {
     getJobs,
     getJobById,
     createJob,
-    deleteJob,
+    deleteJobById,
     getEvents,
     getEventByEventName,
     createEvent,
