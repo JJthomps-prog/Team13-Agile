@@ -70,7 +70,7 @@ async function getJobs(){
     }
 }
 
-async function getJobById(Jobname) {
+async function getJobById(id) {
     try {
         const jobDoc = doc(db, 'jobs', id);
         const jobSnapshot = await getDoc(jobDoc);
@@ -82,7 +82,7 @@ async function getJobById(Jobname) {
         const jobData = jobSnapshot.data();
         return jobData;
     } catch (error) {
-        console.error("Error in getUserByUserName:", error);
+        console.error("Error in getJobById:", error);
         throw 'No Job Found';
     }
 }
