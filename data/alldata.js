@@ -140,37 +140,19 @@ async function deleteJobById(id){
 
 
 //EventsFunction Example
-//"YYYY-MM-DD"
+//"MM-DD-YYYY"
 function isValidDateFormat(dateString) {
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
     return dateRegex.test(dateString);
 }
 
-//"HH:mm"
+//"HH:mm-HH:mm"
 function isValidTimeFormat(timeString) {
-    const timeRegex = /^([01]\d|2[0-3]):[0-5]\d$/;
+    const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]-(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
     return timeRegex.test(timeString);
 }
 
-//determine if the event is valid
-function isValidEvent(event) {
-    if (
-        event &&
-        event.eventname &&
-        event.eventdate &&
-        event.eventtime &&
-        event.eventlocation &&
-        event.eventdescription &&
-        isValidDateFormat(event.eventdate) &&
-        isValidTimeFormat(event.eventtime)
-    ) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-async function getEvents(){
+async function getEvent(){
     try {
         const EventsCol = collection(db, 'events');//get events collection
         const events = await getDocs(EventsCol);
@@ -182,59 +164,77 @@ async function getEvents(){
     }
 }
 
-async function getEventByEventName(Eventname) {
+async function getEventById(id) {
     try {
         const EventsCol = collection(db, 'events');
-        const eventQuery = query(EventsCol, where("eventname", "==", Eventname));// find eventname = Eventname in events collection
+        const eventQuery = query(EventsCol, where("id", "==", id));// find eventname = Eventname in events collection
         const event = await getDocs(eventQuery);
         const singleevent = event.docs.map(doc => doc.data());
         return singleevent;
     } catch (error) {
-        console.error("Error in getEventByEventName:", error);
+        console.error("Error in getEventById:", error);
         throw 'No Event Found';
     }
 }
 
 async function createEvent(Eventname, Eventdate, Eventtime, Eventlocation, Eventdescription){
     try {
-        await addDoc(collection(db,"events"),{
+        if (!isValidDateFormat(Eventdate)){
+            throw 'Date must be MM-DD-YYYY'
+        }
+        if (!isValidTimeFormat(Eventtime)){
+            throw 'Time must be HH:mm-HH:mm'
+        }
+        if (typeof(Eventname) !== 'string' || typeof(Eventlocation)!== 'string' || typeof(Eventdescription)!== 'string'){
+            throw 'Must be strings'
+        }
+        if (typeof(Eventname) === '' || typeof(Eventlocation)=== '' || typeof(Eventdescription)=== ''){
+            throw 'Must be strings'
+        }
+        
+        const docRef = await addDoc(collection(db,"events"),{
             eventname:Eventname,
             eventdate:Eventdate,
             eventtime:Eventtime,
             eventlocation:Eventlocation,
-            eventdescription:Eventdescription
+            eventdescription:Eventdescription,
+            id: ''
         })
-        if (isValidEvent(eventObject)) {
-            await addDoc(collection(db, "events"), eventObject);
-            return { Eventname };
-        } else {
-            throw 'Invalid Event';
-        }
+        const newDocId = docRef.id;
+
+        await updateDoc(doc(db, 'events', newDocId), {
+            id: newDocId
+        });
+        return { id: newDocId, 
+            eventname:Eventname,
+            eventdate:Eventdate,
+            eventtime:Eventtime,
+            eventlocation:Eventlocation,
+            eventdescription:Eventdescription};
+              
     } catch (error) {
-        console.error("Error in getEventByEventName:", error);
+        console.error("Error in CreateEvent:", error);
         throw 'Create Event Fail';
     }
 }
 
-async function deleteEvent(Eventname){
+async function deleteEventById(id){
     try {
         const EventsCol = collection(db, 'events');
-        const eventQuery = query(EventsCol, where("Eventname", "==", Eventname));
+        const eventQuery = query(EventsCol, where("id", "==", id));
         const eventsSnapshot = await getDocs(eventQuery);
         
         if (eventsSnapshot.empty) {
-            throw new Error('No Event Found');
+            throw new Error('No Eventid Found');
         }
 
-        const eventId = eventsSnapshot.docs[0].id;
-        await deleteDoc(doc(db, 'events', eventId));
-        return {Eventname};
+        await deleteDoc(doc(db, 'events', id));
+        return 'delete success';
     } catch (error) {
         console.error("Error in deleteEvent:", error);
         throw error;
     }
 }
-
 
 //news data
 async function getNews(){
@@ -314,10 +314,10 @@ module.exports = {
     getJobById,
     createJob,
     deleteJobById,
-    getEvents,
-    getEventByEventName,
+    getEvent,
+    getEventById,
     createEvent,
-    deleteEvent,
+    deleteEventById,
     getNews,
     getNewsById,
     createNews,
