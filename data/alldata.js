@@ -264,17 +264,18 @@ async function getNewsById(id){
     }
 }
 
-async function createNews(Title,Description){
+async function createNews(Title,Description,Region){
     try {
-        if(typeof(Title) !== 'string' || typeof(Description)!=='string'){
+        if(typeof(Title) !== 'string' || typeof(Description)!=='string' || typeof(Region)!=='string'){
             throw 'Must be strings'
         }
-        if(Title.trim() === '' || Description.trim() === ''){
+        if(Title.trim() === '' || Description.trim() === '' || typeof(Region)!=='string'){
             throw 'Must not be empty'
         }
         const docRef = await addDoc(collection(db,"news"),{
             title:Title,
             description:Description,
+            region: Region, 
             id: ''
         })
         const newDocId = docRef.id;
@@ -282,7 +283,7 @@ async function createNews(Title,Description){
         await updateDoc(doc(db, 'news', newDocId), {
             id: newDocId
         });
-        return { id: newDocId, title: Title, description: Description };
+        return { id: newDocId, title: Title, description: Description ,region:Region};
     } catch (error) {
         console.error("Error in create News:", error);
         throw 'Create News Fail';

@@ -39,7 +39,7 @@ router.get('/categories/landmarks', (req, res) => {
 
 // Login Page
 router.get('/login', async (req, res) => {
-  // await allData.createNews('asdasdasd','asdasdasdasd');
+  // await allData.createNews('asdasdasd','asdasdasdasd','Hoboken');
   //console.log(await allData.getNews());
   // console.log(await allData.getNewsById('Jl84k5P4O2DNW8bGxvg6'));
   //await allData.deleteNewsById("U6eULwskmyuiFaVGQry4");
