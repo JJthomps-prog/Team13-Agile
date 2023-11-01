@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Events</title>
+    <link rel="stylesheet" href="../Team13-Agile/public/css/events.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Community Events</h1>
+      <form id="eventForm">
+        <input type="text" id="eventName" placeholder="Event Name" required />
+        <input type="date" id="eventDate" required />
+        <input
+          type="text"
+          id="eventLocation"
+          placeholder="Event Location"
+          required
+        />
+        <textarea
+          id="eventDescription"
+          placeholder="Event Description"
+          required
+        ></textarea>
+        <button type="submit">Create Event</button>
+      </form>
+      <div class="events-list" id="eventsList"></div>
+    </div>
+
+    <script src="scripts.js"></script>
+  </body>
+</html>
