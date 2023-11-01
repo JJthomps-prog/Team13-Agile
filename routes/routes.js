@@ -6,13 +6,9 @@ router.get('/', (req, res) => {
     res.render('homepage');
   });
 
-router.get('/categories/events', (req, res) => {
-  const eventData = [
-    { title: 'Event Title 1', date: 'January 1, 2024', time: '6:00 PM - 9:00 PM', location: 'Venue ABC', description: 'Lorem ipsum...' },
-    { title: 'Event Title 2', date: 'February 15, 2024', time: '2:00 PM - 5:00 PM', location: 'Venue XYZ', description: 'Duis aute...' },
-  ];
-
-  res.render('events', { events: eventData });
+router.get('/categories/events',  async (req, res) => {
+  const eventData = await allData.getEvent();
+  res.render('events', { eventData });
 });
 
 router.get('/latest-topic', (req, res) => {
@@ -40,11 +36,10 @@ router.get('/categories/landmarks', (req, res) => {
 // Login Page
 router.get('/login', async (req, res) => {
   // await allData.createNews('asdasdasd','asdasdasdasd','Hoboken');
-  //console.log(await allData.getNews());
-  // console.log(await allData.getNewsById('Jl84k5P4O2DNW8bGxvg6'));
-  //await allData.deleteNewsById("U6eULwskmyuiFaVGQry4");
-  //console.log(await allData.getNews());
-  res.render('login');
+  // res.render('login');
+  data = await allData.getEvent(asdasd)
+  console.log(data)
+  res.render('events')
 });
 
 // Register Page
@@ -56,6 +51,6 @@ router.get('/jobs/createJob', (req, res) => {
   allData.createJob('SDE','Hoboken','80000','full stack','1 yr experience', 'full time', 'open');
   res.render('jobs');
 });
-
+ router
 
 module.exports = router;

@@ -1,68 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/home.css">
-    <link rel="stylesheet" href="../css/categories.css">
-    <title>Events Page</title>
-</head>
-<body>
-    <!-- Navigation Bar -->
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/latest-topic">Latest Topics</a></li>
-            <li><a href="/latest-topic/popular-topics">Popular Topics</a></li>
-            <li class="dropdown">
-                <div>Categories</div>
-                <div class="dropdown-content">
-                    <!-- List of categories with links -->
-                    <a href="/categories/events">Events</a>
-                    <a href="/categories/landmarks">Landmarks</a>
-                    <a href="/categories/posts">Posts</a>
-                    <!-- Add more categories as needed -->
-                </div>
-            </li>
-            <!-- Add more navigation links as needed -->
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-        </ul>
-        <!-- Add search bar here -->
-        <li><input type="text" id="search-bar" placeholder="Search..."></li>
-    </nav>
-
-    <!-- Main Content - Events Page -->
-    <div id="content">
-        <h1>Upcoming Events</h1>
-
-        <!-- Event 1 -->
-        <div class="event">
-            <img src="event1.jpg" alt="Event 1">
-            <h2>Event Title 1</h2>
-            <p>Date: January 1, 2024</p>
-            <p>Time: 6:00 PM - 9:00 PM</p>
-            <p>Location: Venue ABC</p>
-            <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et sapien eget nunc venenatis malesuada.</p>
-        </div>
-
-        <!-- Event 2 -->
-        <div class="event">
-            <img src="event2.jpg" alt="Event 2">
-            <h2>Event Title 2</h2>
-            <p>Date: February 15, 2024</p>
-            <p>Time: 2:00 PM - 5:00 PM</p>
-            <p>Location: Venue XYZ</p>
-            <p>Description: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        </div>
-
-        <!-- Add more events as needed -->
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Events</title>
+    <link rel="stylesheet" href="../Team13-Agile/public/css/events.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Community Events</h1>
+      <form id="eventForm" method="post">
+        <input type="text" id="eventName" placeholder="Event Name" required />
+        <input type="date" id="eventDate" required />
+        <input
+          type="text"
+          id="eventLocation"
+          placeholder="Event Location"
+          required
+        />
+        <textarea
+          id="eventDescription"
+          placeholder="Event Description"
+          required
+        ></textarea>
+        <button type="submit">Create Event</button>
+      </form>
+      <div class="events-list" id="eventsList"></div>
     </div>
+    <ul>
+      <% eventData.forEach(item => { %>
+        <li><%= item.eventdate %></li>
+        <li><%= item.eventdescription %></li>
+        <li><%= item.eventlocation %></li>
+        <li><%= item.eventname %></li>
+        <li><%= item.eventtime %></li>
+        <li><%= item.id%></li>
+      <% }); %>
+    </ul>
+    
 
-    <!-- Footer -->
-    <footer>
-        <!-- Add footer content, links, or other relevant information -->
-    </footer>
-</body>
+    <script src="scripts.js"></script>
+  </body>
 </html>
