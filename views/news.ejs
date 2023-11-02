@@ -9,17 +9,17 @@
   <body>
     <div class="container">
       <h1>Community News</h1>
-      <form id="newsForm" method="post">
-        <input type="text" id="Title" placeholder="News Name" required />
+      <form id="newsForm" method="post" action="/categories/news">
+        <input type="text" id="Title" name="Title" required />
         <input
           type="text"
           id="Region"
-          placeholder="News Location"
+          name="Region"
           required
         />
         <textarea
           id="Description"
-          placeholder="News Description"
+          name="Description"
           required
         ></textarea>
         <button type="submit">Create News</button>
