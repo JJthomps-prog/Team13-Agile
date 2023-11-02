@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Events</title>
+    <link rel="stylesheet" href="../Team13-Agile/public/css/jobs.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Community Jobs</h1>
+      <form id="jobForm" method="post">
+        <input type="text" id="jobName" placeholder="Job Name" required />
+        <input
+          type="text"
+          id="jobLocation"
+          placeholder="Job Location"
+          required
+        />
+        <textarea
+          id="jobDescription"
+          placeholder="Job Description"
+          required
+        ></textarea>
+        <button type="submit">Create Job</button>
+      </form>
+      <div class="jobs-list" id="jobsList"></div>
+    </div>
+    <ul>
+      <% jobData.forEach(item => { %>
+        <li><%= item.jobdescription %></li>
+        <li><%= item.joblocation %></li>
+        <li><%= item.jobname %></li>
+        <li><%= item.id%></li>
+      <% }); %>
+    </ul>
+    
+
+    <script src="scripts.js"></script>
+  </body>
+</html>
