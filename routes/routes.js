@@ -76,14 +76,31 @@ router.get("/jobs/createJob", (req, res) => {
 });
 
 router.post("/categories/events", async (req, res) => {
-  const { eventName, eventDate, eventLocation, eventDescription } = req.body;
-  await allData.addEvent(eventName, eventDate, eventLocation, eventDescription);
-  res.redirect("/categories/events");
+  try {
+    const { Eventname, Eventdate, Eventtime, Eventlocation, Eventdescription } =
+      req.body;
+
+    // Convert date from YYYY-MM-DD to MM-DD-YYYY format
+    const [month, day, year] = Eventdate.split("-");
+    const formattedDate = `${month}-${day}-${year}`;
+
+    await allData.createEvent(
+      Eventname,
+      formattedDate,
+      Eventtime,
+      Eventlocation,
+      Eventdescription
+    );
+    res.redirect("/categories/events");
+  } catch (error) {
+    console.error("Error in CreateEvent:", error.message);
+    res.status(500).send("Error creating event. Please try again.");
+  }
 });
 
 router.delete("/categories/events/:id", async (req, res) => {
   const eventId = req.params.id;
-  await allData.deleteEvent(eventId);
+  await allData.deleteEventById(id);
   res.redirect("/categories/events");
 });
 

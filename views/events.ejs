@@ -29,40 +29,46 @@
     </div>
     <ul>
       <% eventData.forEach(item => { %>
-        <li><%= item.eventdate %></li>
-        <li><%= item.eventdescription %></li>
-        <li><%= item.eventlocation %></li>
-        <li><%= item.eventname %></li>
-        <li><%= item.eventtime %></li>
-        <li><%= item.id%></li>
+      <li><%= item.eventdate %></li>
+      <li><%= item.eventdescription %></li>
+      <li><%= item.eventlocation %></li>
+      <li><%= item.eventname %></li>
+      <li><%= item.eventtime %></li>
+      <li><%= item.id%></li>
+      <li>
+        <form action="/categories/events/<%= item.id %>" method="post">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit">Delete</button>
+        </form>
+      </li>
       <% }); %>
     </ul>
 
     <form id="eventForm" method="post" action="/categories/events">
-      <input type="text" id="eventName" name="eventName" placeholder="Event Name" required />
-      <input type="date" id="eventDate" name="eventDate" required />
-      <input type="text" id="eventLocation" name="eventLocation" placeholder="Event Location" required />
-      <textarea id="eventDescription" name="eventDescription" placeholder="Event Description" required></textarea>
+      <input
+        type="text"
+        id="eventName"
+        name="eventName"
+        placeholder="Event Name"
+        required
+      />
+      <input type="date" id="Eventdate" name="Eventdate" required />
+      <input
+        type="text"
+        id="eventLocation"
+        name="eventLocation"
+        placeholder="Event Location"
+        required
+      />
+      <textarea
+        id="eventDescription"
+        name="eventDescription"
+        placeholder="Event Description"
+        required
+      ></textarea>
       <button type="submit">Create Event</button>
     </form>
-    
-    <ul>
-      <% eventData.forEach(item => { %>
-        <li><%= item.eventdate %></li>
-        <li><%= item.eventdescription %></li>
-        <li><%= item.eventlocation %></li>
-        <li><%= item.eventname %></li>
-        <li><%= item.eventtime %></li>
-        <li><%= item.id%></li>
-        <li>
-          <form action="/categories/events/<%= item.id %>" method="post">
-            <input type="hidden" name="_method" value="DELETE">
-            <button type="submit">Delete</button>
-          </form>
-        </li>
-      <% }); %>
-    </ul>
-    
+
     <script src="scripts.js"></script>
   </body>
 </html>
