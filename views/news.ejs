@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community News</title>
+    <link rel="stylesheet" href="../Team13-Agile/public/css/news.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Community News</h1>
+      <form id="newsForm" method="post">
+        <input type="text" id="newsName" placeholder="News Name" required />
+        <input type="date" id="newsDate" required />
+        <input
+          type="text"
+          id="newsLocation"
+          placeholder="News Location"
+          required
+        />
+        <textarea
+          id="newsDescription"
+          placeholder="News Description"
+          required
+        ></textarea>
+        <button type="submit">Create News</button>
+      </form>
+      <div class="news-list" id="newsList"></div>
+    </div>
+    <ul>
+      <% newsData.forEach(item => { %>
+        <li><%= item.newsdescription %></li>
+        <li><%= item.newsregion %></li>
+        <li><%= item.newstitle %></li>
+        <li><%= item.id%></li>
+      <% }); %>
+    </ul>
+    
+
+    <script src="scripts.js"></script>
+  </body>
+</html>
