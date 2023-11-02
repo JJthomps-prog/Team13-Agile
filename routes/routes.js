@@ -47,6 +47,11 @@ router.get('/register', (req, res) => {
   res.render('register');
 });
 
+router.get('/createJob',  async (req, res) => {
+  const jobData = await allData.getJobs();
+  res.render('jobs', { jobData });
+});
+
 router.get('/jobs/createJob', (req, res) => {
   allData.createJob('SDE','Hoboken','80000','full stack','1 yr experience', 'full time', 'open');
   res.render('jobs');
