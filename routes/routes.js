@@ -37,7 +37,7 @@ router.get("/latest-topic/popular-topics", (req, res) => {
 
 router.get("/categories/news", async (req, res) => {
   const newsData = await allData.getNews();
-  res.render("news", {newsData});
+  res.render("news", { newsData });
 });
 
 router.get("/categories/jobs", (req, res) => {
@@ -105,6 +105,17 @@ router.post("/categories/events/delete", async (req, res) => {
   } catch (error) {
     console.error("Error in DeleteEvent:", error.message);
     res.status(500).send("Error deleting event. Please try again.");
+  }
+});
+
+router.post("/categories/news", async (req, res) => {
+  try {
+    const { Title, Description, Region } = req.body;
+    await allData.createNews(Title, Description, Region);
+    res.redirect("/categories/news");
+  } catch (error) {
+    console.error("Error in CreateNews:", error.message);
+    res.status(500).send("Error creating news. Please try again.");
   }
 });
 
