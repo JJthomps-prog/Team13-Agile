@@ -18,7 +18,7 @@
       <li>Location: <%= item.eventlocation %></li>
       <li>Time: <%= item.eventtime %></li>
       <li>Description: <%= item.eventdescription %></li>
-      <li>EventId: <%= item.id%></li>
+      <li style="display: none;">EventId: <%= item.id%></li>
       <li>
         <form action="/categories/events/delete" method="post">
           <input type="hidden" name="eventId" value="<%= item.id %>" />
