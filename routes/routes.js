@@ -40,8 +40,9 @@ router.get("/categories/news", async (req, res) => {
   res.render("news", { newsData });
 });
 
-router.get("/categories/jobs", (req, res) => {
-  res.render("jobs");
+router.get("/categories/jobs", async (req, res) => {
+  const jobData = await allData.getJobs();
+  res.render("jobs", { jobData });
 });
 
 // Login Page
@@ -58,23 +59,19 @@ router.get("/register", (req, res) => {
   res.render("register");
 });
 
-router.get("/createJob", async (req, res) => {
-  const jobData = await allData.getJobs();
-  res.render("jobs", { jobData });
-});
 
-router.get("/jobs/createJob", (req, res) => {
-  allData.createJob(
-    "SDE",
-    "Hoboken",
-    "80000",
-    "full stack",
-    "1 yr experience",
-    "full time",
-    "open"
-  );
-  res.render("jobs");
-});
+// router.get("/jobs/createJob", (req, res) => {
+//   allData.createJob(
+//     "SDE",
+//     "Hoboken",
+//     "80000",
+//     "full stack",
+//     "1 yr experience",
+//     "full time",
+//     "open"
+//   );
+//   res.render("jobs");
+// });
 
 router.post("/categories/events", async (req, res) => {
   try {
@@ -119,14 +116,35 @@ router.post("/categories/news", async (req, res) => {
   }
 });
 
-router.post("/categories/news/delete", async (req, res) => {
+router.post("/categories/jobs", async (req, res) => {
   try {
-    const newsId = req.body.newsId;
-    await allData.deleteNewsById(newsId);
-    res.redirect("/categories/news");
+    const { jobName, jobSalary, jobLocation, jobDescription, jobRequirement, jobType, jobStatus } =
+      req.body;
+
+    await allData.createJob(
+      jobName, 
+      jobSalary, 
+      jobLocation, 
+      jobDescription, 
+      jobRequirement, 
+      jobType, 
+      jobStatus
+    );
+    res.redirect("/categories/jobs");
   } catch (error) {
-    console.error("Error in DeleteNews:", error.message);
-    res.status(500).send("Error deleting news. Please try again.");
+    console.error("Error in CreateJob:", error.message);
+    res.status(500).send("Error creating job. Please try again.");
+  }
+});
+
+router.post("/categories/jobs/delete", async (req, res) => {
+  try {
+    const jobId = req.body.jobId;
+    await allData.deleteJobById(jobId);
+    res.redirect("/categories/jobs");
+  } catch (error) {
+    console.error("Error in DeleteJob:", error.message);
+    res.status(500).send("Error deleting job. Please try again.");
   }
 });
 
