@@ -1,61 +1,90 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const allData = require('../data/alldata');
+const allData = require("../data/alldata");
 
-router.get('/', (req, res) => {
-    res.render('homepage');
-  });
-
-router.get('/categories/events',  async (req, res) => {
-  const eventData = await allData.getEvent();
-  res.render('events', { eventData });
+router.get("/", (req, res) => {
+  res.render("homepage");
 });
 
-router.get('/latest-topic', (req, res) => {
+router.get("/categories/events", async (req, res) => {
+  const eventData = await allData.getEvent();
+  res.render("events", { eventData });
+});
+
+router.get("/latest-topic", (req, res) => {
   const topicsData = [
-    { title: 'Topic Title 1', author: 'John Doe', replies: 5, content: 'That sounds like a fun event to attend!' },
-    { title: 'Topic Title 2', author: 'Jane Smith', replies: 8, content: 'I tried the new restaurant last week, and it was fantastic!' },
+    {
+      title: "Topic Title 1",
+      author: "John Doe",
+      replies: 5,
+      content: "That sounds like a fun event to attend!",
+    },
+    {
+      title: "Topic Title 2",
+      author: "Jane Smith",
+      replies: 8,
+      content: "I tried the new restaurant last week, and it was fantastic!",
+    },
     // Add more topics here
   ];
 
-  res.render('latest-topic', { topics: topicsData });
+  res.render("latest-topic", { topics: topicsData });
 });
 
-router.get('/latest-topic/popular-topics', (req, res) => {
+router.get("/latest-topic/popular-topics", (req, res) => {
   // Fetch and render popular topics here
 });
 
-router.get('/categories/posts', (req, res) => {
-  res.render('posts');
+router.get("/categories/posts", (req, res) => {
+  res.render("posts");
 });
 
-router.get('/categories/landmarks', (req, res) => {
-  res.render('landmarks');
+router.get("/categories/landmarks", (req, res) => {
+  res.render("landmarks");
 });
 
 // Login Page
-router.get('/login', async (req, res) => {
+router.get("/login", async (req, res) => {
   // await allData.createNews('asdasdasd','asdasdasdasd','Hoboken');
   // res.render('login');
-  data = await allData.getEvent(asdasd)
-  console.log(data)
-  res.render('events')
+  data = await allData.getEvent(asdasd);
+  console.log(data);
+  res.render("events");
 });
 
 // Register Page
-router.get('/register', (req, res) => {
-  res.render('register');
+router.get("/register", (req, res) => {
+  res.render("register");
 });
 
-router.get('/createJob',  async (req, res) => {
+router.get("/createJob", async (req, res) => {
   const jobData = await allData.getJobs();
-  res.render('jobs', { jobData });
+  res.render("jobs", { jobData });
 });
 
-router.get('/jobs/createJob', (req, res) => {
-  allData.createJob('SDE','Hoboken','80000','full stack','1 yr experience', 'full time', 'open');
-  res.render('jobs');
+router.get("/jobs/createJob", (req, res) => {
+  allData.createJob(
+    "SDE",
+    "Hoboken",
+    "80000",
+    "full stack",
+    "1 yr experience",
+    "full time",
+    "open"
+  );
+  res.render("jobs");
 });
- router
+
+router.post("/categories/events", async (req, res) => {
+  const { eventName, eventDate, eventLocation, eventDescription } = req.body;
+  await allData.addEvent(eventName, eventDate, eventLocation, eventDescription);
+  res.redirect("/categories/events");
+});
+
+router.delete("/categories/events/:id", async (req, res) => {
+  const eventId = req.params.id;
+  await allData.deleteEvent(eventId);
+  res.redirect("/categories/events");
+});
 
 module.exports = router;
