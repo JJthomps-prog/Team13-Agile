@@ -35,12 +35,13 @@ router.get("/latest-topic/popular-topics", (req, res) => {
   // Fetch and render popular topics here
 });
 
-router.get("/categories/posts", (req, res) => {
-  res.render("posts");
+router.get("/categories/news", async (req, res) => {
+  const newsData = await allData.getNews();
+  res.render("news", {newsData});
 });
 
-router.get("/categories/landmarks", (req, res) => {
-  res.render("landmarks");
+router.get("/categories/jobs", (req, res) => {
+  res.render("jobs");
 });
 
 // Login Page
