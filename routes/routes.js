@@ -77,19 +77,16 @@ router.get("/jobs/createJob", (req, res) => {
 
 router.post("/categories/events", async (req, res) => {
   try {
-    const { Eventname, Eventdate, Eventtime, Eventlocation, Eventdescription } =
-      req.body;
-
-    // Convert date from YYYY-MM-DD to MM-DD-YYYY format
-    const [month, day, year] = Eventdate.split("-");
+    const { eventName, Eventdate, Eventtime, eventLocation, eventDescription } = req.body;
+    const [year, month, day] = Eventdate.split("-");
     const formattedDate = `${month}-${day}-${year}`;
 
     await allData.createEvent(
-      Eventname,
+      eventName,
       formattedDate,
       Eventtime,
-      Eventlocation,
-      Eventdescription
+      eventLocation,
+      eventDescription
     );
     res.redirect("/categories/events");
   } catch (error) {

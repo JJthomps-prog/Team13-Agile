@@ -8,11 +8,6 @@ const { getFirestore, collection, getDocs } = require('firebase/firestore/lite')
 
 const app = express();
 
-const methodOverride = require('method-override');
-
-// Use method-override middleware
-app.use(methodOverride('_method'));
-
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));

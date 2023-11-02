@@ -224,9 +224,6 @@ async function createEvent(
     if (!isValidDateFormat(Eventdate)) {
       throw "Date must be MM-DD-YYYY";
     }
-    if (!isValidTimeFormat(Eventtime)) {
-      throw "Time must be HH:mm-HH:mm";
-    }
     if (
       typeof Eventname !== "string" ||
       typeof Eventlocation !== "string" ||
