@@ -13,12 +13,12 @@
     </div>
     <ul>
       <% eventData.forEach(item => { %>
-      <li>Name:<%= item.eventname %></li>
-      <li>Date:<%= item.eventdate %></li>
-      <li>Location:<%= item.eventlocation %></li>
-      <li>Time:<%= item.eventtime %></li>
-      <li>Time:<%= item.eventdescription %></li>
-      <li>EventId:<%= item.id%></li>
+      <li>Name: <%= item.eventname %></li>
+      <li>Date: <%= item.eventdate %></li>
+      <li>Location: <%= item.eventlocation %></li>
+      <li>Time: <%= item.eventtime %></li>
+      <li>Description: <%= item.eventdescription %></li>
+      <li>EventId: <%= item.id%></li>
       <li>
         <form action="/categories/events/delete" method="post">
           <input type="hidden" name="eventId" value="<%= item.id %>" />

@@ -119,4 +119,15 @@ router.post("/categories/news", async (req, res) => {
   }
 });
 
+router.post("/categories/news/delete", async (req, res) => {
+  try {
+    const newsId = req.body.newsId;
+    await allData.deleteNewsById(newsId);
+    res.redirect("/categories/news");
+  } catch (error) {
+    console.error("Error in DeleteNews:", error.message);
+    res.status(500).send("Error deleting news. Please try again.");
+  }
+});
+
 module.exports = router;
