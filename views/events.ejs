@@ -20,8 +20,8 @@
       <li><%= item.eventtime %></li>
       <li><%= item.id%></li>
       <li>
-        <form action="/categories/events/<%= item.id %>" method="post">
-          <input type="hidden" name="_method" value="DELETE" />
+        <form action="/categories/events/delete" method="post">
+          <input type="hidden" name="eventId" value="<%= item.id %>" />
           <button type="submit">Delete</button>
         </form>
       </li>

@@ -77,7 +77,8 @@ router.get("/jobs/createJob", (req, res) => {
 
 router.post("/categories/events", async (req, res) => {
   try {
-    const { eventName, Eventdate, Eventtime, eventLocation, eventDescription } = req.body;
+    const { eventName, Eventdate, Eventtime, eventLocation, eventDescription } =
+      req.body;
     const [year, month, day] = Eventdate.split("-");
     const formattedDate = `${month}-${day}-${year}`;
 
@@ -95,10 +96,15 @@ router.post("/categories/events", async (req, res) => {
   }
 });
 
-router.delete("/categories/events/:id", async (req, res) => {
-  const eventId = req.params.id;
-  await allData.deleteEventById(id);
-  res.redirect("/categories/events");
+router.post("/categories/events/delete", async (req, res) => {
+  try {
+    const eventId = req.body.eventId;
+    await allData.deleteEventById(eventId);
+    res.redirect("/categories/events");
+  } catch (error) {
+    console.error("Error in DeleteEvent:", error.message);
+    res.status(500).send("Error deleting event. Please try again.");
+  }
 });
 
 module.exports = router;
