@@ -476,17 +476,19 @@ async function getNewsReview(NewsId){
     throw error;
   }
 }
-async function createNewsReview(UserId,Content){
+async function createNewsReview(UserId,NewsId,Content){
   try {
     if (
       typeof UserId !== "string" ||
+      typeof NewsId !== "string" ||
       typeof Content !== "string"
     ) {
       throw "Must be strings";
     }
     if (
       UserId.trim() === "" ||
-      Content.trim() === ""
+      Content.trim() === ""||
+      NewsId.trim() === ""
     ) {
       throw "Must not be empty";
     }
@@ -494,8 +496,13 @@ async function createNewsReview(UserId,Content){
     if (user.length == 0){
       throw 'no such user'
     }
+    news = await getNewsById(NewsId);
+    if (news.length == 0){
+      throw 'no such news'
+    }
     const docRef = await addDoc(collection(db, "newsreview"), {
       userid: UserId,
+      newsid: NewsId,
       content: Content,
       id: ""
     });
@@ -507,6 +514,7 @@ async function createNewsReview(UserId,Content){
     return {
       id: newDocId,
       userid: UserId,
+      newsid: NewsId,
       content: Content
     };
   } catch (error) {
