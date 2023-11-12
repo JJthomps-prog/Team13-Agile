@@ -1,77 +1,106 @@
 const express = require("express");
+const session = require('express-session');
 const router = express.Router();
 const allData = require("../data/alldata");
-
+router.use(session({
+  secret: 'Team13',
+  resave: false,
+  saveUninitialized: true,
+}));
+router.get("/backendtest",async (req,res)=>{
+  const newsR = await allData.createNewsReview("5w9H3318s3W6xeuyqy82","asdaiushdiaushdihuasidhiausd");
+  // console.log(await allData.getNewsReview(""));
+  // await allData.deleteNewsReview("")
+})
 router.get("/", (req, res) => {
-  res.render("homepage");
+  if(req.session.username){
+    res.render('homepage');
+  }else{
+    res.redirect('/login')
+  }
 });
 
 router.get("/categories/events", async (req, res) => {
-  const eventData = await allData.getEvent();
-  res.render("events", { eventData });
-});
-
-router.get("/latest-topic", (req, res) => {
-  const topicsData = [
-    {
-      title: "Topic Title 1",
-      author: "John Doe",
-      replies: 5,
-      content: "That sounds like a fun event to attend!",
-    },
-    {
-      title: "Topic Title 2",
-      author: "Jane Smith",
-      replies: 8,
-      content: "I tried the new restaurant last week, and it was fantastic!",
-    },
-    // Add more topics here
-  ];
-
-  res.render("latest-topic", { topics: topicsData });
-});
-
-router.get("/latest-topic/popular-topics", (req, res) => {
-  // Fetch and render popular topics here
+  if(req.session.username){
+    const eventData = await allData.getEvent();
+    res.render("events", { eventData });
+  }else{
+    res.redirect('/login')
+  }
 });
 
 router.get("/categories/news", async (req, res) => {
-  const newsData = await allData.getNews();
-  res.render("news", { newsData });
+  if(req.session.username){
+    const newsData = await allData.getNews();
+    res.render("news", { newsData });
+  }else{
+    res.redirect('/login')
+  }
 });
 
 router.get("/categories/jobs", async (req, res) => {
-  const jobData = await allData.getJobs();
-  res.render("jobs", { jobData });
+  if(req.session.username){
+    const jobData = await allData.getJobs();
+    res.render("jobs", { jobData });
+  }else{
+    res.redirect('/login')
+  }
 });
 
 // Login Page
 router.get("/login", async (req, res) => {
-  // await allData.createNews('asdasdasd','asdasdasdasd','Hoboken');
-  // res.render('login');
-  data = await allData.getEvent(asdasd);
-  console.log(data);
-  res.render("events");
+  if(req.session.username){
+    res.redirect('/')
+  }else{
+    res.render('login')
+  }
 });
+
+router.post("/login",async(req,res) =>{
+  try {
+    const {username,password} = req.body;
+    const user = await allData.getUserByEmail(username,password);
+    if(user){
+      req.session.username = user[0];
+      req.session.id = user[1];
+    }
+    res.redirect('/')
+  } catch (error) {
+    console.error("Error in getUserByEmail:", error);
+    res.status(500).send(error);
+  }
+})
 
 // Register Page
 router.get("/register", (req, res) => {
-  res.render("register");
+  if(req.session.username){
+    res.redirect('/')
+  }else{
+    res.render('register');
+  }
 });
 
+router.post("/register",async(req,res) =>{
+  try {
+    const {username,email,password,security_question,security_question_answer} = req.body;
+    const Username = await allData.createUser(username,email,password,security_question,security_question_answer);
+    res.render('login')
+  } catch (error) {
+    console.error("Error in Register:", error);
+    res.status(500).send(error);
+  }
+})
 
-// router.get("/jobs/createJob", (req, res) => {
-//   allData.createJob(
-//     "SDE",
-//     "Hoboken",
-//     "80000",
-//     "full stack",
-//     "1 yr experience",
-//     "full time",
-//     "open"
-//   );
-//   res.render("jobs");
-// });
+router.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+      if (err) {
+          console.error("Error destroying session:", err);
+          return res.status(500).send("Error logging out. Please try again.");
+      }
+      res.redirect("/login");
+  });
+});
+
 
 router.post("/categories/events", async (req, res) => {
   try {

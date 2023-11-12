@@ -28,42 +28,63 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 
-//UserFunction Example
-async function getUsers() {
-  try {
-    const UsersCol = collection(db, "users"); //get users collection
-    const users = await getDocs(UsersCol);
-    const userlist = users.docs.map((doc) => doc.data()); //convert to list type
-    return userlist; // return a list contain all users
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    throw "No Users Found";
-  }
-}
-
-async function getUserByUserName(Username) {
+async function getUserById(id) {
   try {
     const UsersCol = collection(db, "users");
-    const userQuery = query(UsersCol, where("username", "==", Username)); // find username = Username in users collection
+    const userQuery = query(UsersCol, where("id", "==", id));
     const user = await getDocs(userQuery);
     const singleuser = user.docs.map((doc) => doc.data());
     return singleuser;
   } catch (error) {
-    console.error("Error in getUserByUserName:", error);
+    console.error("Error in getEventById:", error);
+    throw "No Event Found";
+  }
+}
+
+async function getUserByEmail(Username,Password) {
+  try {
+    const UsersCol = collection(db, "users");
+    const userQuery = query(UsersCol, where("email", "==", Username)); // find username = Username in users collection
+    const user = await getDocs(userQuery);
+    const singleuser = user.docs.map((doc) => doc.data());
+    if (singleuser[0].password == Password){
+      return [singleuser[0].username,singleuser[0].id];
+    }else{
+      throw 'wrong password';
+    }
+  } catch (error) {
+    if (error == 'wrong password'){
+      throw 'wrong password';
+    }
     throw "No User Found";
   }
 }
 
-async function createUser(Username, Password) {
+async function createUser(Username, Email ,Password ,Question, Answer) {
   try {
-    await addDoc(collection(db, "users"), {
+    const UsersCol = collection(db, "users");
+    const userQuery = query(UsersCol, where("email", "==", Email));
+    const user = await getDocs(userQuery);
+    const singleuser = user.docs.map((doc) => doc.data());
+    if (singleuser[0]){
+      throw 'email exists'
+    }
+    const docRef = await addDoc(collection(db, "users"), {
       username: Username,
+      email:Email,
       password: Password,
+      SecurityQuestion: Question,
+      SecurityAnswer: Answer,
+      id: ""
+    });
+    const newDocId = docRef.id;
+    await updateDoc(doc(db, "users", newDocId), {
+      id: newDocId,
     });
     return { Username };
   } catch (error) {
-    console.error("Error in getUserByUserName:", error);
-    throw "Create User Fail";
+    console.error("Error in createUser:", error);
+    throw error;
   }
 }
 
@@ -368,9 +389,80 @@ async function deleteNewsById(id) {
   }
 }
 
+//newsReview
+async function getNewsReview(NewsId){
+  try {
+    if (typeof NewsId !== "string" && NewsId.trim() === "") {
+      throw "invalid id";
+    }
+    const NewsCol = collection(db, "newsreview");
+    const newQuery = query(NewsCol, where("id", "==", NewsId)); // find eventname = Eventname in events collection
+    const news = await getDocs(newQuery);
+    const singlenews = news.docs.map((doc) => doc.data());
+    return singlenews;
+  } catch (error) {
+    console.error("Error in get News Review:", error);
+    throw error;
+  }
+}
+async function createNewsReview(UserId,Content){
+  try {
+    if (
+      typeof UserId !== "string" ||
+      typeof Content !== "string"
+    ) {
+      throw "Must be strings";
+    }
+    if (
+      UserId.trim() === "" ||
+      Content.trim() === ""
+    ) {
+      throw "Must not be empty";
+    }
+    user = await getUserById(UserId);
+    if (user.length == 0){
+      throw 'no such user'
+    }
+    const docRef = await addDoc(collection(db, "newsreview"), {
+      userid: UserId,
+      content: Content,
+      id: ""
+    });
+    const newDocId = docRef.id;
+
+    await updateDoc(doc(db, "newsreview", newDocId), {
+      id: newDocId,
+    });
+    return {
+      id: newDocId,
+      userid: UserId,
+      content: Content
+    };
+  } catch (error) {
+    console.error("Error in create News Review:", error);
+    throw error;
+  }
+}
+async function deleteNewsReview(NewsId){
+  try {
+    const NewsCol = collection(db, "newsreview");
+    const newQuery = query(NewsCol, where("id", "==", NewsId));
+    const newsSnapshot = await getDocs(newQuery);
+
+    if (newsSnapshot.empty) {
+      throw new Error("No NewsReview Found");
+    }
+    await deleteDoc(doc(db, "newsreview", NewsId));
+    return "delete success";
+  } catch (error) {
+    console.error("Error in delete News Review:", error);
+    throw error;
+  }
+}
+
 module.exports = {
-  getUsers,
-  getUserByUserName,
+  getUserById,
+  getUserByEmail,
   createUser,
   getJobs,
   getJobById,
@@ -384,4 +476,7 @@ module.exports = {
   getNewsById,
   createNews,
   deleteNewsById,
+  getNewsReview,
+  createNewsReview,
+  deleteNewsReview
 };
