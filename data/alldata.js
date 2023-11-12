@@ -305,6 +305,77 @@ async function deleteEventById(id) {
   }
 }
 
+//eventsReview
+async function getEventReview(EventId){
+  try {
+    if (typeof EventId !== "string" && EventId.trim() === "") {
+      throw "invalid id";
+    }
+    const EventCol = collection(db, "eventreview");
+    const newQuery = query(EventCol, where("id", "==", EventId)); // find eventname = Eventname in events collection
+    const event = await getDocs(newQuery);
+    const singleevent = event.docs.map((doc) => doc.data());
+    return singleevent;
+  } catch (error) {
+    console.error("Error in get Event Review:", error);
+    throw error;
+  }
+}
+async function createEventReview(UserId,Content){
+  try {
+    if (
+      typeof UserId !== "string" ||
+      typeof Content !== "string"
+    ) {
+      throw "Must be strings";
+    }
+    if (
+      UserId.trim() === "" ||
+      Content.trim() === ""
+    ) {
+      throw "Must not be empty";
+    }
+    user = await getUserById(UserId);
+    if (user.length == 0){
+      throw 'no such user'
+    }
+    const docRef = await addDoc(collection(db, "eventreview"), {
+      userid: UserId,
+      content: Content,
+      id: ""
+    });
+    const newDocId = docRef.id;
+
+    await updateDoc(doc(db, "eventreview", newDocId), {
+      id: newDocId,
+    });
+    return {
+      id: newDocId,
+      userid: UserId,
+      content: Content
+    };
+  } catch (error) {
+    console.error("Error in create Event Review:", error);
+    throw error;
+  }
+}
+async function deleteEventReview(EventId){
+  try {
+    const EventCol = collection(db, "eventreview");
+    const newQuery = query(EventCol, where("id", "==", EventId));
+    const eventSnapshot = await getDocs(newQuery);
+
+    if (eventSnapshot.empty) {
+      throw new Error("No EventReview Found");
+    }
+    await deleteDoc(doc(db, "eventreview", EventId));
+    return "delete success";
+  } catch (error) {
+    console.error("Error in delete Event Review:", error);
+    throw error;
+  }
+}
+
 //news data
 async function getNews() {
   try {
@@ -472,6 +543,9 @@ module.exports = {
   getEventById,
   createEvent,
   deleteEventById,
+  getEventReview,
+  createEventReview,
+  deleteEventReview,
   getNews,
   getNewsById,
   createNews,
