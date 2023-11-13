@@ -509,7 +509,7 @@ async function createNewsReview(UserId,NewsId,Content){
     }
     const docRef = await addDoc(collection(db, "newsreview"), {
       userid: UserId,
-      username: user.username,
+      username: user[0].username,
       newsid: NewsId,
       content: Content,
       id: ""
