@@ -306,13 +306,13 @@ async function deleteEventById(id) {
 }
 
 //eventsReview
-async function getEventReview(EventId){
+async function getEventReview(Id){
   try {
-    if (typeof EventId !== "string" && EventId.trim() === "") {
+    if (typeof Id !== "string" && tId.trim() === "") {
       throw "invalid id";
     }
     const EventCol = collection(db, "eventreview");
-    const newQuery = query(EventCol, where("id", "==", EventId)); // find eventname = Eventname in events collection
+    const newQuery = query(EventCol, where("id", "==", Id)); // find eventname = Eventname in events collection
     const event = await getDocs(newQuery);
     const singleevent = event.docs.map((doc) => doc.data());
     return singleevent;
@@ -347,6 +347,8 @@ async function createEventReview(UserId,EventId,Content){
     }
     const docRef = await addDoc(collection(db, "eventreview"), {
       userid: UserId,
+      username: user[0].username,
+      eventid: EventId,
       content: Content,
       id: ""
     });
@@ -359,6 +361,7 @@ async function createEventReview(UserId,EventId,Content){
       id: newDocId,
       userid: UserId,
       eventid:EventId,
+      username: user[0].username,
       content: Content
     };
   } catch (error) {
@@ -366,19 +369,34 @@ async function createEventReview(UserId,EventId,Content){
     throw error;
   }
 }
-async function deleteEventReview(EventId){
+async function deleteEventReview(Id){
   try {
     const EventCol = collection(db, "eventreview");
-    const newQuery = query(EventCol, where("id", "==", EventId));
+    const newQuery = query(EventCol, where("id", "==", Id));
     const eventSnapshot = await getDocs(newQuery);
 
     if (eventSnapshot.empty) {
       throw new Error("No EventReview Found");
     }
-    await deleteDoc(doc(db, "eventreview", EventId));
+    await deleteDoc(doc(db, "eventreview", Id));
     return "delete success";
   } catch (error) {
     console.error("Error in delete Event Review:", error);
+    throw error;
+  }
+}
+async function getReviewByEventId(EventId){
+  try {
+    if (typeof EventId !== "string" && EventId.trim() === "") {
+      throw "invalid id";
+    }
+    const EventCol = collection(db, "eventreview");
+    const newQuery = query(EventCol, where("eventid", "==", EventId)); // find eventname = Eventname in events collection
+    const event = await getDocs(newQuery);
+    const eventreviews = event.docs.map((doc) => doc.data());
+    return eventreviews;
+  } catch (error) {
+    console.error("Error in get Event Review:", error);
     throw error;
   }
 }
@@ -579,6 +597,7 @@ module.exports = {
   getEventReview,
   createEventReview,
   deleteEventReview,
+  getReviewByEventId,
   getNews,
   getNewsById,
   createNews,
