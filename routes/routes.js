@@ -9,15 +9,6 @@ router.use(session({
 }));
 router.get("/backendtest",async (req,res)=>{
   const newsR = await allData.createNewsReview("h0lxQf8XYIzzOfWMgjIG","ua4jLSiqRTS5lyP2H6X3","asdaiushdiaushdihuasidhiausd");
-<<<<<<< HEAD
-  //console.log(await allData.getNewsReview(""));
-  //console.log(await allData.getReviewByNewsId("ua4jLSiqRTS5lyP2H6X3"));
-  //await allData.deleteNewsReview("Qjfn81DA1pHZEV10MeGN")
-=======
-  const eventR = await allData.createEventReview("h0lxQf8XYIzzOfWMgjIG","l2COFudTIAull2MkbUw8","asdasdasdasdasdasdasdasd");
-  // console.log(await allData.getNewsReview(""));
-  // await allData.deleteNewsReview("")
->>>>>>> 67abdb0b9d0bc79428ed2a918fd14be29793abca
 })
 router.get("/", (req, res) => {
   if(req.session.username){
