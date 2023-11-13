@@ -523,10 +523,11 @@ async function createNewsReview(UserId,NewsId,Content){
       id: newDocId,
       userid: UserId,
       newsid: NewsId,
+      username: user[0].username,
       content: Content
     };
   } catch (error) {
-    console.error("Error in create News Review:", error);
+    console.logerror("Error in create News Review:", error);
     throw error;
   }
 }
