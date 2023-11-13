@@ -8,7 +8,7 @@ router.use(session({
   saveUninitialized: true,
 }));
 router.get("/backendtest",async (req,res)=>{
-  const newsR = await allData.createNewsReview("5w9H3318s3W6xeuyqy82","asdaiushdiaushdihuasidhiausd");
+  const newsR = await allData.createNewsReview("h0lxQf8XYIzzOfWMgjIG","ua4jLSiqRTS5lyP2H6X3","asdaiushdiaushdihuasidhiausd");
   // console.log(await allData.getNewsReview(""));
   // await allData.deleteNewsReview("")
 })
