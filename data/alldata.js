@@ -390,13 +390,13 @@ async function deleteNewsById(id) {
 }
 
 //newsReview
-async function getNewsReview(NewsId){
+async function getNewsReview(Id){
   try {
-    if (typeof NewsId !== "string" && NewsId.trim() === "") {
+    if (typeof Id !== "string" && Id.trim() === "") {
       throw "invalid id";
     }
     const NewsCol = collection(db, "newsreview");
-    const newQuery = query(NewsCol, where("id", "==", NewsId)); // find eventname = Eventname in events collection
+    const newQuery = query(NewsCol, where("id", "==", Id)); // find eventname = Eventname in events collection
     const news = await getDocs(newQuery);
     const singlenews = news.docs.map((doc) => doc.data());
     return singlenews;
@@ -451,19 +451,35 @@ async function createNewsReview(UserId,NewsId,Content){
     throw error;
   }
 }
-async function deleteNewsReview(NewsId){
+async function deleteNewsReview(Id){
   try {
     const NewsCol = collection(db, "newsreview");
-    const newQuery = query(NewsCol, where("id", "==", NewsId));
+    const newQuery = query(NewsCol, where("id", "==", Id));
     const newsSnapshot = await getDocs(newQuery);
 
     if (newsSnapshot.empty) {
       throw new Error("No NewsReview Found");
     }
-    await deleteDoc(doc(db, "newsreview", NewsId));
+    await deleteDoc(doc(db, "newsreview", Id));
     return "delete success";
   } catch (error) {
     console.error("Error in delete News Review:", error);
+    throw error;
+  }
+}
+
+async function getReviewByNewsId(NewsId){
+  try {
+    if (typeof NewsId !== "string" && NewsId.trim() === "") {
+      throw "invalid id";
+    }
+    const NewsCol = collection(db, "newsreview");
+    const newQuery = query(NewsCol, where("newsid", "==", NewsId)); // find eventname = Eventname in events collection
+    const news = await getDocs(newQuery);
+    const newsreviews = news.docs.map((doc) => doc.data());
+    return newsreviews;
+  } catch (error) {
+    console.error("Error in get News Review:", error);
     throw error;
   }
 }
@@ -486,5 +502,6 @@ module.exports = {
   deleteNewsById,
   getNewsReview,
   createNewsReview,
-  deleteNewsReview
+  deleteNewsReview,
+  getReviewByNewsId
 };
