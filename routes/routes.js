@@ -9,6 +9,7 @@ router.use(session({
 }));
 router.get("/backendtest",async (req,res)=>{
   const newsR = await allData.createNewsReview("h0lxQf8XYIzzOfWMgjIG","ua4jLSiqRTS5lyP2H6X3","asdaiushdiaushdihuasidhiausd");
+  const eventR = await allData.createEventReview("h0lxQf8XYIzzOfWMgjIG","l2COFudTIAull2MkbUw8","asdasdasdasdasdasdasdasd");
   // console.log(await allData.getNewsReview(""));
   // await allData.deleteNewsReview("")
 })
