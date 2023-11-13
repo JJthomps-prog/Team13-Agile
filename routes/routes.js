@@ -11,7 +11,7 @@ router.get("/backendtest",async (req,res)=>{
   const newsR = await allData.createNewsReview("h0lxQf8XYIzzOfWMgjIG","ua4jLSiqRTS5lyP2H6X3","asdaiushdiaushdihuasidhiausd");
   //console.log(await allData.getNewsReview(""));
   //console.log(await allData.getReviewByNewsId("ua4jLSiqRTS5lyP2H6X3"));
-  await allData.deleteNewsReview("Qjfn81DA1pHZEV10MeGN")
+  //await allData.deleteNewsReview("Qjfn81DA1pHZEV10MeGN")
 })
 router.get("/", (req, res) => {
   if(req.session.username){
