@@ -409,7 +409,7 @@ async function getJobReview(Id){
       throw "invalid id";
     }
     const JobCol = collection(db, "jobreview");
-    const newQuery = query(JobCol, where("id", "==", Id)); // find eventname = Eventname in events collection
+    const newQuery = query(JobCol, where("id", "==", Id));
     const job = await getDocs(newQuery);
     const singlejob = job.docs.map((doc) => doc.data());
     return singlejob;
@@ -696,6 +696,10 @@ module.exports = {
   createEventReview,
   deleteEventReview,
   getReviewByEventId,
+  getJobReview,
+  createJobReview,
+  deleteJobReview,
+  getReviewByJobId,
   getNews,
   getNewsById,
   createNews,
