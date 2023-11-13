@@ -46,6 +46,41 @@ router.get("/categories/jobs", async (req, res) => {
   }
 });
 
+router.get("/categories/getjobreview/:id", async (req, res) => {
+    const id = req.params.id;
+    const jobData = await allData.getJobReview(id);
+    res.render("jobs", { jobData });
+    return res.json(jobData);
+});
+
+router.get("/categories/getreviewbyjobid/:id", async (req, res) => {
+  const id = req.params.id;
+  const jobData = await allData.getReviewByJobId(id);
+  res.render("jobs", { jobData });
+  return res.json(jobData);
+});
+
+router.get("/categories/deletejobreview/:id", async (req, res) => {
+  const id = req.params.id;
+  const jobData = await allData.deleteJobReview(id);
+  res.render("jobs", { jobData });
+  return res.json(jobData);
+});
+
+router.post("/categories/jobreview", async (req, res) => {
+  const data = req.body;
+  console.log(data);
+  const userid = data.userid;
+  const jobid = data.jobid;
+  const review = data.review;
+  console.log(userid,jobid,review);
+  console.log(typeof(userid),typeof(jobid),typeof(review));
+  const jobData = await allData.createJobReview(userid, jobid, review);
+  res.render("jobs", { jobData });
+  return res.json(jobData);
+});
+
+
 // Login Page
 router.get("/login", async (req, res) => {
   if(req.session.username){
