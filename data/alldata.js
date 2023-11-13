@@ -105,7 +105,7 @@ async function getJobById(id) {
     if (typeof id !== "string" && id.trim() === "") {
       throw "invalid id";
     }
-    const Col = collection(db, "news");
+    const Col = collection(db, "jobs");
     const Query = query(Col, where("id", "==", id)); // find eventname = Eventname in events collection
     const job = await getDocs(Query);
     const singlejob = job.docs.map((doc) => doc.data());
@@ -400,6 +400,104 @@ async function getReviewByEventId(EventId){
     throw error;
   }
 }
+
+//job review
+
+async function getJobReview(Id){
+  try {
+    if (typeof Id !== "string" && tId.trim() === "") {
+      throw "invalid id";
+    }
+    const JobCol = collection(db, "jobreview");
+    const newQuery = query(JobCol, where("id", "==", Id)); // find eventname = Eventname in events collection
+    const job = await getDocs(newQuery);
+    const singlejob = job.docs.map((doc) => doc.data());
+    return singlejob;
+  } catch (error) {
+    console.error("Error in get Job Review:", error);
+    throw error;
+  }
+}
+async function createJobReview(UserId,JobId,Content){
+  try {
+    if (
+      typeof UserId !== "string" ||
+      typeof JobId !== "string" ||
+      typeof Content !== "string"
+    ) {
+      throw "Must be strings";
+    }
+    if (
+      UserId.trim() === "" ||
+      JobId.trim() === "" ||
+      Content.trim() === ""
+    ) {
+      throw "Must not be empty";
+    }
+    user = await getUserById(UserId);
+    if (user.length == 0){
+      throw 'no such user'
+    }
+    job = await getJobById(EventId);
+    if (job.length == 0){
+      throw 'no such job'
+    }
+    const docRef = await addDoc(collection(db, "jobreview"), {
+      userid: UserId,
+      username: user[0].username,
+      jobid: JobId,
+      content: Content,
+      id: ""
+    });
+    const newDocId = docRef.id;
+
+    await updateDoc(doc(db, "jobreview", newDocId), {
+      id: newDocId,
+    });
+    return {
+      id: newDocId,
+      userid: UserId,
+      jobid: JobId,
+      username: user[0].username,
+      content: Content
+    };
+  } catch (error) {
+    console.error("Error in create Job Review:", error);
+    throw error;
+  }
+}
+async function deleteJobReview(Id){
+  try {
+    const JobCol = collection(db, "jobreview");
+    const newQuery = query(JobCol, where("id", "==", Id));
+    const eventSnapshot = await getDocs(newQuery);
+
+    if (eventSnapshot.empty) {
+      throw new Error("No JobReview Found");
+    }
+    await deleteDoc(doc(db, "jobreview", Id));
+    return "delete jobreview success";
+  } catch (error) {
+    console.error("Error in delete Job Review:", error);
+    throw error;
+  }
+}
+async function getReviewByJobId(JobId){
+  try {
+    if (typeof JobId !== "string" && JobId.trim() === "") {
+      throw "invalid id";
+    }
+    const JobCol = collection(db, "jobreview");
+    const newQuery = query(JobCol, where("jobid", "==", JobId)); 
+    const job = await getDocs(newQuery);
+    const jobreviews = job.docs.map((doc) => doc.data());
+    return jobreviews;
+  } catch (error) {
+    console.error("Error in get Job Review:", error);
+    throw error;
+  }
+}
+
 
 //news data
 async function getNews() {
