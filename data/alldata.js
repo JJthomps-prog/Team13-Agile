@@ -438,7 +438,7 @@ async function createJobReview(UserId,JobId,Content){
     if (user.length == 0){
       throw 'no such user'
     }
-    job = await getJobById(EventId);
+    job = await getJobById(JobId);
     if (job.length == 0){
       throw 'no such job'
     }
