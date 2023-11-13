@@ -321,16 +321,18 @@ async function getEventReview(EventId){
     throw error;
   }
 }
-async function createEventReview(UserId,Content){
+async function createEventReview(UserId,EventId,Content){
   try {
     if (
       typeof UserId !== "string" ||
+      typeof EventId !== "string" ||
       typeof Content !== "string"
     ) {
       throw "Must be strings";
     }
     if (
       UserId.trim() === "" ||
+      EventId.trim() === "" ||
       Content.trim() === ""
     ) {
       throw "Must not be empty";
@@ -338,6 +340,10 @@ async function createEventReview(UserId,Content){
     user = await getUserById(UserId);
     if (user.length == 0){
       throw 'no such user'
+    }
+    events = await getEventById(EventId);
+    if (events.length == 0){
+      throw 'no such event'
     }
     const docRef = await addDoc(collection(db, "eventreview"), {
       userid: UserId,
@@ -352,6 +358,7 @@ async function createEventReview(UserId,Content){
     return {
       id: newDocId,
       userid: UserId,
+      eventid:EventId,
       content: Content
     };
   } catch (error) {
