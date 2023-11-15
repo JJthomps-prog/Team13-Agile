@@ -1,87 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Community Jobs</title>
     <link rel="stylesheet" href="../Team13-Agile/public/css/jobs.css" />
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <h1>Community Jobs</h1>
-      <div class="jobs" id="jobsList"></div>
+        <h1>Community Jobs</h1>
+        <div class="jobs" id="jobsList"></div>
     </div>
     <ul>
-      <% jobData.forEach(item => { %>
-      <li>Job Name:<%= item.Jobname %></li>
-      <li>Location:<%= item.Location %></li>
-      <li>Salary:<%= item.Salary %></li>
-      <li>Description:<%= item.Description %></li>
-      <li>Requirement:<%= item.Requirement %></li>
-      <li>Job Type:<%= item.Jobtype %></li>
-      <li>Job status:<%= item.Jobstatus %></li>
-      <li>JobId:<%= item.id%></li>
-      <li>
-        <form action="/categories/jobs/delete" method="post">
-          <input type="hidden" name="jobId" value="<%= item.id %>" />
-          <button type="submit">Delete</button>
-        </form>
-      </li>
-      <% }); %>
+        <% jobData.forEach(item => { %>
+        <li>
+            <h2>Job Name: <%= item.Jobname %></h2>
+            <p>Location: <%= item.Location %></p>
+            <p>Salary: <%= item.Salary %></p>
+            <p>Description: <%= item.Description %></p>
+            <p>Requirement: <%= item.Requirement %></p>
+            <p>Job Type: <%= item.Jobtype %></p>
+            <p>Job status: <%= item.Jobstatus %></p>
+            <p>JobId: <%= item.id %></p>
+            <!-- Add a link to the job review page -->
+            <a href="/categories/jobs/<%= item.id %>/reviews">View Reviews</a>
+            <!-- Add a form to delete the job -->
+            <form action="/categories/jobs/delete" method="post">
+                <input type="hidden" name="jobId" value="<%= item.id %>" />
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        <% }); %>
     </ul>
 
     <form id="jobForm" method="post" action="/categories/jobs">
-      <input
-        type="text"
-        id="jobName"
-        name="jobName"
-        placeholder="Job Name"
-        required
-      />
-      <input
-        type="text"
-        id="jobLocation"
-        name="jobLocation"
-        placeholder="Job Location"
-        required
-      />
-      <input
-      type="text"
-      id="jobSalary"
-      name="jobSalary"
-      placeholder="Job Salary"
-      required
-      />
-      <textarea
-        id="jobDescription"
-        name="jobDescription"
-        placeholder="Job Description"
-        required
-      ></textarea>
-      <input
-      type="text"
-      id="jobRequirement"
-      name="jobRequirement"
-      placeholder="Job Requirement"
-      required
-      />
-      <input
-      type="text"
-      id="jobType"
-      name="jobType"
-      placeholder="Job Type"
-      required
-      />
-      <input
-      type="text"
-      id="jobStatus"
-      name="jobStatus"
-      placeholder="Job Status"
-      required
-      />
-      <button type="submit">Create Job</button>
+        <input
+            type="text"
+            id="jobName"
+            name="jobName"
+            placeholder="Job Name"
+            required
+        />
+        <input
+            type="text"
+            id="jobLocation"
+            name="jobLocation"
+            placeholder="Job Location"
+            required
+        />
+        <input
+            type="text"
+            id="jobSalary"
+            name="jobSalary"
+            placeholder="Job Salary"
+            required
+        />
+        <textarea
+            id="jobDescription"
+            name="jobDescription"
+            placeholder="Job Description"
+            required
+        ></textarea>
+        <input
+            type="text"
+            id="jobRequirement"
+            name="jobRequirement"
+            placeholder="Job Requirement"
+            required
+        />
+        <input
+            type="text"
+            id="jobType"
+            name="jobType"
+            placeholder="Job Type"
+            required
+        />
+        <input
+            type="text"
+            id="jobStatus"
+            name="jobStatus"
+            placeholder="Job Status"
+            required
+        />
+        <button type="submit">Create Job</button>
     </form>
 
     <script src="scripts.js"></script>
-  </body>
+</body>
 </html>
