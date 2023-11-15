@@ -211,4 +211,45 @@ router.post("/categories/jobs/delete", async (req, res) => {
   }
 });
 
+// Job Review
+router.get('/categories/jobs/:jobId/reviews', async (req, res) => {
+  try {
+    const jobId = req.params.jobId;
+    const existingReviews = await allData.getReviewByJobId(jobId);
+    const jobDetails = await allData.getJobById(jobId); // Fetch job details
+
+    res.render('jobReview', { existingReviews, jobDetails });
+  } catch (error) {
+    console.error('Error fetching job reviews:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+router.post('/createJobReview', async (req, res) => {
+  try {
+    const { userId, jobId, content } = req.body;
+    const newReview = await allData.createJobReview(userId, jobId, content);
+
+    // Redirect to the job review page after creating a new review
+    res.redirect(`/categories/jobs/${jobId}/reviews`);
+  } catch (error) {
+    console.error('Error creating job review:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+router.post('/deleteJobReview/:reviewId', async (req, res) => {
+  try {
+    const reviewId = req.params.reviewId;
+    await allData.deleteJobReview(reviewId);
+
+    // Redirect to the job review page after deleting the review
+    res.redirect('/categories/jobs/:jobId/reviews');
+  } catch (error) {
+    console.error('Error deleting job review:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 module.exports = router;
