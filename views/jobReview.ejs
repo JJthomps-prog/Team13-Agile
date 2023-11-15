@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Review Page</title>
+</head>
+<body>
+
+  <h1>Community Jobs</h1>
+
+  <!-- Display job details -->
+  <h2>Job Details</h2>
+  <% if (jobDetails.length > 0) { %>
+    <p>Job Name: <%= jobDetails[0].Jobname %></p>
+    <p>Location: <%= jobDetails[0].Location %></p>
+    <p>Salary: <%= jobDetails[0].Salary %></p>
+    <p>Description: <%= jobDetails[0].Description %></p>
+    <p>Requirement: <%= jobDetails[0].Requirement %></p>
+    <p>Job Type: <%= jobDetails[0].Jobtype %></p>
+    <p>Job Status: <%= jobDetails[0].Jobstatus %></p>
+    <p>Job ID: <%= jobDetails[0].id %></p>
+  <% } else { %>
+    <p>No job details available.</p>
+  <% } %>
+
+  <!-- Display existing reviews -->
+  <h2>Existing Reviews</h2>
+  <ul>
+    <% if (existingReviews.length === 0) { %>
+      <p>No reviews available for this job.</p>
+    <% } else { %>
+      <% existingReviews.forEach((review) => { %>
+        <li>
+          <strong>User:</strong> <%= review.username %><br>
+          <strong>Content:</strong> <%= review.content %>
+          <!-- Include a button to delete the review -->
+          <form action="/deleteJobReview/<%= review.id %>" method="POST">
+            <button type="submit">Delete Review</button>
+          </form>
+        </li>
+      <% }); %>
+    <% } %>
+  </ul>
+
+  <!-- Create a new review -->
+  <h2>Create a New Review</h2>
+  <form action="/createJobReview" method="POST">
+
+    <label for="userId">User ID:</label>
+    <input type="text" id="userId" name="userId" required><br>
+
+    <label for="jobId">Job ID:</label>
+    <input type="text" id="jobId" name="jobId" value="<%= jobDetails[0].id %>" required readonly><br>
+
+    <label for="content">Review Content:</label>
+    <textarea id="content" name="content" required></textarea><br>
+
+    <button type="submit">Submit Review</button>
+  </form>
+
+</body>
+</html>
