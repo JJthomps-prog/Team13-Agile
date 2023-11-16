@@ -212,8 +212,16 @@ router.post("/categories/jobs/delete", async (req, res) => {
 });
 
 
+function checkLoggedIn(req, res, next) {
+  if (req.session && req.session.userid ) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+}
+
 // Job Review
-router.get('/categories/jobs/:jobId/reviews', async (req, res) => {
+router.get('/categories/jobs/:jobId/reviews', checkLoggedIn, async (req, res) => {
   try {
     const jobId = req.params.jobId;
     const existingReviews = await allData.getReviewByJobId(jobId);
@@ -226,10 +234,10 @@ router.get('/categories/jobs/:jobId/reviews', async (req, res) => {
   }
 });
 
-router.post('/createJobReview', async (req, res) => {
+router.post('/createJobReview',checkLoggedIn, async (req, res) => {
   try {
-    const {jobId, content } = req.body;
-    const newReview = await allData.createJobReview(req.session.userid, jobId, content);
+    const {jobId, content, userId } = req.body;
+    const newReview = await allData.createJobReview(req.session.userid, jobId, content, userId);
 
     // Redirect to the job review page after creating a new review
     res.redirect(`/categories/jobs/${jobId}/reviews`);
@@ -239,17 +247,22 @@ router.post('/createJobReview', async (req, res) => {
   }
 });
 
-router.post('/deleteJobReview/:reviewId', async (req, res) => {
+router.post('/deleteJobReview/:reviewId', checkLoggedIn, async (req, res) => {
   try {
     const {jobid} = req.body;
     const reviewId = req.params.reviewId;
-    const review = await allData.getReviewByJobId(reviewId); // Fetch the review
+    const review = await allData.getJobReview(reviewId); // Fetch the review
 
     if (!review) {
       res.status(404).send('Review not found');
     } else {
-      await allData.deleteJobReview(reviewId);
-      res.redirect(`/categories/jobs/${jobid}/reviews`); // Redirect to the job review page after deleting the review
+      // Check if the user is the owner of the review
+      if (req.session.userid !== review[0].userid) {
+        res.status(403).send('Forbidden: You can only delete your own reviews');
+      } else {
+        await allData.deleteJobReview(reviewId);
+        res.redirect(`/categories/jobs/${jobid}/reviews`); // Redirect to the job review page after deleting the review
+      }
     }
   } catch (error) {
     console.error('Error deleting job review:', error);
