@@ -241,7 +241,7 @@ router.post('/createJobReview', async (req, res) => {
 
 router.post('/deleteJobReview/:reviewId', async (req, res) => {
   try {
-    const jobId = req.body;
+    const {jobid} = req.body;
     const reviewId = req.params.reviewId;
     const review = await allData.getReviewByJobId(reviewId); // Fetch the review
 
@@ -249,7 +249,7 @@ router.post('/deleteJobReview/:reviewId', async (req, res) => {
       res.status(404).send('Review not found');
     } else {
       await allData.deleteJobReview(reviewId);
-      res.redirect(`/categories/jobs/${jobId}/reviews`); // Redirect to the job review page after deleting the review
+      res.redirect(`/categories/jobs/${jobid}/reviews`); // Redirect to the job review page after deleting the review
     }
   } catch (error) {
     console.error('Error deleting job review:', error);

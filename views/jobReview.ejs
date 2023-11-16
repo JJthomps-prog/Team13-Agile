@@ -36,6 +36,7 @@
           <strong>Content:</strong> <%= review.content %>
           <!-- Include a button to delete the review -->
           <form action="/deleteJobReview/<%= review.id %>" method="POST">
+            <input type="hidden" name="jobid" value="<%= jobDetails[0].id %>">
             <button type="submit">Delete Review</button>
           </form>
         </li>
