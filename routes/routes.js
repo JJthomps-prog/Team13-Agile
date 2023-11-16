@@ -211,6 +211,7 @@ router.post("/categories/jobs/delete", async (req, res) => {
   }
 });
 
+
 // Job Review
 router.get('/categories/jobs/:jobId/reviews', async (req, res) => {
   try {
@@ -224,7 +225,6 @@ router.get('/categories/jobs/:jobId/reviews', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
 
 router.post('/createJobReview', async (req, res) => {
   try {
@@ -241,11 +241,16 @@ router.post('/createJobReview', async (req, res) => {
 
 router.post('/deleteJobReview/:reviewId', async (req, res) => {
   try {
+    const jobId = req.body;
     const reviewId = req.params.reviewId;
-    await allData.deleteJobReview(reviewId);
+    const review = await allData.getReviewByJobId(reviewId); // Fetch the review
 
-    // Redirect to the job review page after deleting the review
-    res.redirect('/categories/jobs/:jobId/reviews');
+    if (!review) {
+      res.status(404).send('Review not found');
+    } else {
+      await allData.deleteJobReview(reviewId);
+      res.redirect(`/categories/jobs/${jobId}/reviews`); // Redirect to the job review page after deleting the review
+    }
   } catch (error) {
     console.error('Error deleting job review:', error);
     res.status(500).send('Internal Server Error');
