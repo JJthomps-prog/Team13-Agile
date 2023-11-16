@@ -42,13 +42,13 @@ test('getNewsById should retrieve news by ID', async () => {
   });
 
   test('getNewsReview should retrieve news review by ID',async () => {
-    const id = "Njn8Xg5kD1zEEm5iury6";
+    const id = "6DdenNa2T0Htw8BGKlwO";
     try {
       const result = await allData.getNewsReview(id);
       const expectedData = {
         content: "asdaiushdiaushdihuasidhiausd",
         id: "Njn8Xg5kD1zEEm5iury6",
-        newsid: "ua4jLSiqRTS5lyP2H6X3",
+        newsid: "6DdenNa2T0Htw8BGKlwO",
         userid: "h0lxQf8XYIzzOfWMgjIG",
         username: "1"
       };
@@ -60,7 +60,7 @@ test('getNewsById should retrieve news by ID', async () => {
   });
 
   test('deleteNewsReview should delete a news review by ID', async () => {
-    const idToDelete = "tCbsw6xkjlCS9700nMJ8";
+    const idToDelete = "dpqJiWPIACslWULpqo50";
     try {
       const result = await allData.deleteNewsReview(idToDelete);
       expect(result).toEqual("delete success");
