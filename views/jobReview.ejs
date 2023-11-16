@@ -48,7 +48,12 @@
   <form action="/createJobReview" method="POST">
 
     <label for="jobId">Job ID:</label>
-    <input type="text" id="jobId" name="jobId" value="<%= jobDetails[0].id %>" required readonly><br>
+    <% if (jobDetails && jobDetails.length > 0) { %>
+      <input type="text" id="jobId" name="jobId" value="<%= jobDetails[0].id %>" required readonly><br>
+    <% } else { %>
+      <input type="text" id="jobId" name="jobId" required readonly><br>
+    <% } %>
+    
 
     <label for="content">Review Content:</label>
     <textarea id="content" name="content" required></textarea><br>
