@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Review Page</title>
+</head>
+<body>
+
+  <h1>Community News</h1>
+
+  <!-- Display job details -->
+  <h2>News Details</h2>
+  <% if (newsDetails.length > 0) { %>
+    <p>News Name: <%= newsDetails[0].Newsname %></p>
+    <p>Location: <%= newsDetails[0].Location %></p>
+    <p>Salary: <%= newsDetails[0].Salary %></p>
+    <p>Description: <%= newsDetails[0].Description %></p>
+    <p>Requirement: <%= newsDetails[0].Requirement %></p>
+    <p>News Type: <%= newsDetails[0].Newstype %></p>
+    <p>News Status: <%= newsDetails[0].Newsstatus %></p>
+    <p>News ID: <%= newsDetails[0].id %></p>
+  <% } else { %>
+    <p>No news details available.</p>
+  <% } %>
+
+  <!-- Display existing reviews -->
+  <h2>Existing Reviews</h2>
+  <ul>
+    <% if (existingReviews.length === 0) { %>
+      <p>No reviews available for this news.</p>
+    <% } else { %>
+      <% existingReviews.forEach((review) => { %>
+        <li>
+          <strong>User:</strong> <%= review.username %><br>
+          <strong>Content:</strong> <%= review.content %>
+          <!-- Include a button to delete the review -->
+          <form action="/deleteNewsReview/<%= review.id %>" method="POST">
+            <input type="hidden" name="newsid" value="<%= newsDetails[0].id %>">
+            <button type="submit">Delete Review</button>
+          </form>
+        </li>
+      <% }); %>
+    <% } %>
+  </ul>
+
+  <!-- Create a new review -->
+  <h2>Create a New Review</h2>
+  <form action="/createNewsReview" method="POST">
+
+    <label for="newsId">News ID:</label>
+    <% if (newsDetails && newsDetails.length > 0) { %>
+      <input type="text" id="newsId" name="newsId" value="<%= newsDetails[0].id %>" required readonly><br>
+    <% } else { %>
+      <input type="text" id="newsId" name="newsId" required readonly><br>
+    <% } %>
+    
+
+    <label for="content">Review Content:</label>
+    <textarea id="content" name="content" required></textarea><br>
+
+    <button type="submit">Submit Review</button>
+  </form>
+
+</body>
+</html>
