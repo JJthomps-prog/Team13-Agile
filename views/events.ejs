@@ -18,6 +18,7 @@
       <li>Time: <%= item.eventtime %></li>
       <li>Description: <%= item.eventdescription %></li>
       <li style="display: none;">EventId: <%= item.id%></li>
+      <a href="/categories/events/<%= item.id %>/reviews">View Reviews</a>
       <li>
         <form action="/categories/events/delete" method="post">
           <input type="hidden" name="eventId" value="<%= item.id %>" />

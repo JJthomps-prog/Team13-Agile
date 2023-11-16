@@ -270,4 +270,55 @@ router.post('/deleteJobReview/:reviewId', checkLoggedIn, async (req, res) => {
   }
 });
 
+
+// Event Review
+router.get('/categories/events/:eventId/reviews', checkLoggedIn, async (req, res) => {
+  try {
+    const eventId = req.params.eventId;
+    const existingReviews = await allData.getReviewByEventId(eventId);
+    const eventDetails = await allData.getEventById(eventId); // Fetch job details
+
+    res.render('eventReview', { existingReviews, eventDetails });
+  } catch (error) {
+    console.error('Error fetching event reviews:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+router.post('/createEventReview',checkLoggedIn, async (req, res) => {
+  try {
+    const {eventId, content, userId } = req.body;
+    const newReview = await allData.createEventReview(req.session.userid, eventId, content, userId);
+
+    // Redirect to the event review page after creating a new review
+    res.redirect(`/categories/events/${eventId}/reviews`);
+  } catch (error) {
+    console.error('Error creating event review:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+router.post('/deleteEventReview/:reviewId', checkLoggedIn, async (req, res) => {
+  try {
+    const {eventid} = req.body;
+    const reviewId = req.params.reviewId;
+    const review = await allData.getEventReview(reviewId); // Fetch the review
+
+    if (!review) {
+      res.status(404).send('Review not found');
+    } else {
+      // Check if the user is the owner of the review
+      if (req.session.userid !== review[0].userid) {
+        res.status(403).send('Forbidden: You can only delete your own reviews');
+      } else {
+        await allData.deleteEventReview(reviewId);
+        res.redirect(`/categories/events/${eventid}/reviews`); // Redirect to the event review page after deleting the review
+      }
+    }
+  } catch (error) {
+    console.error('Error deleting event review:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 module.exports = router;

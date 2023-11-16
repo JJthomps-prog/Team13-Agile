@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Review Page</title>
+</head>
+<body>
+
+  <h1>Community Events</h1>
+
+  <!-- Display job details -->
+  <h2>Event Details</h2>
+  <% if (eventDetails.length > 0) { %>
+    <p>Event Name: <%= eventDetails[0].eventname %></p>
+    <p>Date: <%= eventDetails[0].eventdate %></p>
+    <p>Location: <%= eventDetails[0].eventlocation %></p>
+    <p>Time: <%= eventDetails[0].eventtime %></p>
+    <p>Description: <%= eventDetails[0].eventdescription %></p>
+    <p>Event ID: </p> ID: <%= eventDetails[0].id %></p>
+  <% } else { %>
+    <p>No Event details available.</p>
+  <% } %>
+
+  <!-- Display existing reviews -->
+  <h2>Existing Reviews</h2>
+  <ul>
+    <% if (existingReviews.length === 0) { %>
+      <p>No reviews available for this event.</p>
+    <% } else { %>
+      <% existingReviews.forEach((review) => { %>
+        <li>
+          <strong>User:</strong> <%= review.username %><br>
+          <strong>Content:</strong> <%= review.content %>
+          <!-- Include a button to delete the review -->
+          <form action="/deleteEventReview/<%= review.id %>" method="POST">
+            <input type="hidden" name="eventid" value="<%= eventDetails[0].id %>">
+            <button type="submit">Delete Review</button>
+          </form>
+        </li>
+      <% }); %>
+    <% } %>
+  </ul>
+
+  <!-- Create a new review -->
+  <h2>Create a New Review</h2>
+  <form action="/createEventReview" method="POST">
+
+    <label for="eventId">Event ID:</label>
+    <% if (eventDetails && eventDetails.length > 0) { %>
+      <input type="text" id="eventId" name="eventId" value="<%= eventDetails[0].id %>" required readonly><br>
+    <% } else { %>
+      <input type="text" id="eventId" name="eventId" required readonly><br>
+    <% } %>
+    
+
+    <label for="content">Review Content:</label>
+    <textarea id="content" name="content" required></textarea><br>
+
+    <button type="submit">Submit Review</button>
+  </form>
+
+</body>
+</html>
