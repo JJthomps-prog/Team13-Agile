@@ -96,7 +96,7 @@ router.post("/login",async(req,res) =>{
     const user = await allData.getUserByEmail(username,password);
     if(user){
       req.session.username = user[0];
-      req.session.id = user[1];
+      req.session.userid = user[1];
     }
     res.redirect('/')
   } catch (error) {
@@ -228,8 +228,8 @@ router.get('/categories/jobs/:jobId/reviews', async (req, res) => {
 
 router.post('/createJobReview', async (req, res) => {
   try {
-    const { userId, jobId, content } = req.body;
-    const newReview = await allData.createJobReview(userId, jobId, content);
+    const {jobId, content } = req.body;
+    const newReview = await allData.createJobReview(req.session.userid, jobId, content);
 
     // Redirect to the job review page after creating a new review
     res.redirect(`/categories/jobs/${jobId}/reviews`);
