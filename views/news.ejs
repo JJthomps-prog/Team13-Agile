@@ -9,9 +9,26 @@
     <div class="container">
       <h1>Community News</h1>
       <form id="newsForm" method="post" action="/categories/news">
-        <input type="text" id="Title" name="Title" placeholder="Title" required />
-        <input type="text" id="Region" name="Region" placeholder="Region" required />
-        <textarea id="Description" name="Description" placeholder="Description" required></textarea>
+        <input
+          type="text"
+          id="Title"
+          name="Title"
+          placeholder="Title"
+          required
+        />
+        <input
+          type="text"
+          id="Region"
+          name="Region"
+          placeholder="Region"
+          required
+        />
+        <textarea
+          id="Description"
+          name="Description"
+          placeholder="Description"
+          required
+        ></textarea>
         <button type="submit">Create News</button>
       </form>
       <div class="news-list" id="newsList"></div>
@@ -21,12 +38,13 @@
       <li>Title: <%= item.title %></li>
       <li>Region: <%= item.region %></li>
       <li>Description: <%= item.description %></li>
-      <li style="display: none;">NewsId: <%= item.id%></li>
+      <li style="display: none">NewsId: <%= item.id%></li>
+      <a href="/categories/news/<%= item.id %>/reviews">View Reviews</a>
       <li>
         <form action="/categories/news/delete" method="post">
-          <input type="hidden" name="newsId" value="<%= item.id %>">
+          <input type="hidden" name="newsId" value="<%= item.id %>" />
           <button type="submit">Delete</button>
-      </form>
+        </form>
       </li>
 
       <% }); %>
