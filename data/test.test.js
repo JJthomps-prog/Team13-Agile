@@ -215,3 +215,24 @@ test('changeNewsStatusById should retrieve news by ID', async () => {
     throw new Error(`getNewsById failed with error: ${error}`);
   }
 });
+
+test('changeEventStatusById should retrieve event by ID', async () => {
+  const id = 'zNdPAhJo0qt3fqFby2vs'; // Replace with a valid event ID from your test data
+
+  try {
+    const result = await allData.changeEventStatusById(id,0);
+    const expectedData = {
+      eventdate: "11-03-2023",
+      eventdescription: "Career Fair",
+      eventlocation: "Stevens Institute Of Technology",
+      eventname: "Career Fair",
+      eventtime: "09:35",
+      id: "zNdPAhJo0qt3fqFby2vs",
+      status: 0,
+    };
+
+    expect(result[0]).toEqual(expectedData);
+  } catch (error) {
+    throw new Error(`getEventById failed with error: ${error}`);
+  }
+});
