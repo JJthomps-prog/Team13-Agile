@@ -196,3 +196,22 @@ try {
   throw new Error(`createEventReview failed with error: ${error}`);
 }
 });
+
+test('changeNewsStatusById should retrieve news by ID', async () => {
+  const id = 'ua4jLSiqRTS5lyP2H6X3'; // Replace with a valid news ID from your test data
+
+  try {
+    const result = await allData.changeNewsStatusById(id,0);
+    const expectedData = {
+      description: "Drug becomes a serious problem",
+      id: "ua4jLSiqRTS5lyP2H6X3",
+      region: "New York",
+      status: 0,
+      title: "Drugs Problem"
+    };
+
+    expect(result[0]).toEqual(expectedData);
+  } catch (error) {
+    throw new Error(`getNewsById failed with error: ${error}`);
+  }
+});

@@ -47,8 +47,17 @@ async function getUserByEmail(Username,Password) {
     const userQuery = query(UsersCol, where("email", "==", Username)); // find username = Username in users collection
     const user = await getDocs(userQuery);
     const singleuser = user.docs.map((doc) => doc.data());
-    if (singleuser[0].password == Password){
-      return [singleuser[0].username,singleuser[0].id];
+    if(!singleuser[0]){
+      const AdminCol = collection(db, "admins");
+      const adminQuery = query(AdminCol,where("email","==",Username));
+      const admin = await getDocs(adminQuery);
+      const singleadmin = admin.docs.map((doc) => doc.data());
+      if (singleadmin[0].password == Password){
+        return [singleadmin[0].adminname,singleadmin[0].id,'admin'];
+      }
+      throw 'wrong password';
+    }else if (singleuser[0].password == Password){
+      return [singleuser[0].username,singleuser[0].id,'user'];
     }else{
       throw 'wrong password';
     }
@@ -56,7 +65,7 @@ async function getUserByEmail(Username,Password) {
     if (error == 'wrong password'){
       throw 'wrong password';
     }
-    throw "No User Found";
+    throw 'No User Found';
   }
 }
 
@@ -93,7 +102,8 @@ async function getJobs() {
     const JobsCol = collection(db, "jobs"); //get users collection
     const jobs = await getDocs(JobsCol);
     const joblist = jobs.docs.map((doc) => doc.data()); //convert to list type
-    return joblist; // return a list contain all users
+    const filteredJobs = joblist.filter((item) => item.status === 1);
+    return filteredJobs;
   } catch (error) {
     console.error("Error fetching jobs:", error);
     throw "No jobs Found";
@@ -156,6 +166,7 @@ async function createJob(
       Requirement: Requirement,
       Jobtype: Jobtype,
       Jobstatus: Jobstatus,
+      status: 0,
       id: "",
     });
     const newDocId = docRef.id;
@@ -214,7 +225,8 @@ async function getEvent() {
     const EventsCol = collection(db, "events"); //get events collection
     const events = await getDocs(EventsCol);
     const eventlist = events.docs.map((doc) => doc.data()); //convert to list type
-    return eventlist; // return a list contain all events
+    const filteredEvent = eventlist.filter((item) => item.status === 1);
+    return filteredEvent;
   } catch (error) {
     console.error("Error fetching events:", error);
     throw "No Events Found";
@@ -266,6 +278,7 @@ async function createEvent(
       eventtime: Eventtime,
       eventlocation: Eventlocation,
       eventdescription: Eventdescription,
+      status: 0,
       id: "",
     });
     const newDocId = docRef.id;
@@ -505,7 +518,8 @@ async function getNews() {
     const NewsCol = collection(db, "news"); //get users collection
     const news = await getDocs(NewsCol);
     const newlist = news.docs.map((doc) => doc.data()); //convert to list type
-    return newlist; // return a list contain all users
+    const filteredNews = newlist.filter((item) => item.status === 1);
+    return filteredNews;
   } catch (error) {
     throw "No news found";
   }
@@ -547,6 +561,7 @@ async function createNews(Title, Description, Region) {
       title: Title,
       description: Description,
       region: Region,
+      status: 0,
       id: "",
     });
     const newDocId = docRef.id;
@@ -680,6 +695,37 @@ async function getReviewByNewsId(NewsId){
   }
 }
 
+async function getAdminNews() {
+  try {
+    const NewsCol = collection(db, "news"); //get users collection
+    const news = await getDocs(NewsCol);
+    const newlist = news.docs.map((doc) => doc.data()); //convert to list type
+    return newlist
+  } catch (error) {
+    throw "No news found";
+  }
+}
+
+async function changeNewsStatusById(id,Status) {
+  try {
+    if (typeof id !== "string" && id.trim() === "") {
+      throw new Error("Invalid id");
+    }
+    if (Status !== 1 && Status !== 0){
+      throw new Error('Status should be 0 or 1. 0 means not published. 1 means published.')
+    }
+    await updateDoc(doc(db, "news", id), {
+      status:Status
+    });
+    return getNewsById(id);
+  } catch (error) {
+    console.error("Error in changeNewsStatusById:", error);
+    throw error;
+  }
+}
+
+
+
 module.exports = {
   getUserById,
   getUserByEmail,
@@ -707,5 +753,7 @@ module.exports = {
   getNewsReview,
   createNewsReview,
   deleteNewsReview,
-  getReviewByNewsId
+  getReviewByNewsId,
+  getAdminNews,
+  changeNewsStatusById
 };

@@ -24,6 +24,8 @@ router.get("/backendtest", async (req, res) => {
 router.get("/", (req, res) => {
   if (req.session.username) {
     res.render("homepage");
+  }else if (req.session.adminname){
+    res.render("admin");
   } else {
     res.redirect("/login");
   }
@@ -94,6 +96,8 @@ router.post("/categories/jobreview", async (req, res) => {
 router.get("/login", async (req, res) => {
   if (req.session.username) {
     res.redirect("/");
+  } else if (req.session.adminname){
+    res.redirect("/");
   } else {
     res.render("login");
   }
@@ -103,9 +107,13 @@ router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await allData.getUserByEmail(username, password);
-    if (user) {
+    if (user&&user[2]=='user') {
       req.session.username = user[0];
       req.session.userid = user[1];
+    }
+    if (user&&user[2]=='admin'){
+      req.session.adminname = user[0];
+      req.session.adminid = user[1];
     }
     res.redirect("/");
   } catch (error) {
