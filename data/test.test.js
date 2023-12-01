@@ -215,3 +215,27 @@ test('changeNewsStatusById should retrieve news by ID', async () => {
     throw new Error(`getNewsById failed with error: ${error}`);
   }
 });
+
+test('changeJobStatusById should retrieve jobs by ID', async () => {
+  const id = 'Z5f5960BozazhWFFsV9S'; // Replace with a valid news ID from your test data
+
+  try {
+    const result = await allData.changeJobStatusById(id,0);
+    const expectedData = {
+      Description: "1",
+      Jobname:"DS",
+      Jobstatus:"open",
+      Jobtype:"FULLTIME",
+      Location:"6000",
+      Requirement:"none",
+      Salary:"HOBOKEN",
+      id: "Z5f5960BozazhWFFsV9S",
+      status: 0
+    };
+
+    expect(result[0]).toEqual(expectedData);
+  } catch (error) {
+    throw new Error(`changeJobStatusById failed with error: ${error}`);
+  }
+});
+
