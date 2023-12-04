@@ -317,6 +317,35 @@ async function deleteEventById(id) {
     throw error;
   }
 }
+async function getAdminEvent() {
+  try {
+    const EventCol = collection(db, "events"); //get users collection
+    const event = await getDocs(EventCol);
+    const newlist = event.docs.map((doc) => doc.data()); //convert to list type
+    return newlist
+  } catch (error) {
+    throw "No event found";
+  }
+}
+
+async function changeEventStatusById(id,Status) {
+  try {
+    if (typeof id !== "string" && id.trim() === "") {
+      throw new Error("Invalid id");
+    }
+    if (Status !== 1 && Status !== 0){
+      throw new Error('Status should be 0 or 1. 0 means not published. 1 means published.')
+    }
+    await updateDoc(doc(db, "events", id), {
+      status:Status
+    });
+    return getEventById(id);
+  } catch (error) {
+    console.error("Error in changeEventStatusById:", error);
+    throw error;
+  }
+}
+
 
 //eventsReview
 async function getEventReview(Id){
@@ -742,6 +771,8 @@ module.exports = {
   createEventReview,
   deleteEventReview,
   getReviewByEventId,
+  getAdminEvent,
+  changeEventStatusById,
   getJobReview,
   createJobReview,
   deleteJobReview,
