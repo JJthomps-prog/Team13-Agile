@@ -13,8 +13,6 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/latest-topic">Latest Topics</a></li>
-            <li><a href="/latest-topic/popular-topics">Popular Topics</a></li>
             <li class="dropdown">
                 <div>Categories</div>
                 <div class="dropdown-content">
@@ -27,56 +25,32 @@
             </li>
         </ul>
         <!-- Add search bar here -->
-        <li><input type="text" id="search-bar" placeholder="Search..."></li>
         <li><a href="/logout">Logout</a></li>
     </nav>
 
     <!-- Main Content -->
     <div id="content">
-        <!-- Section to Create Profiles -->
-        <section id="create-profile">
-            <h2>Create Profile</h2>
-            <form action="/create_profile" method="POST">
-                <label for="profileType">Profile Type:</label>
-                <select id="profileType" name="profileType">
-                    <option value="business">Business</option>
-                    <option value="landmark">Landmark</option>
-                    <option value="festival">Festival</option>
-                    <!-- Add more options as needed -->
-                </select>
-                <br>
-                <label for="profileName">Name:</label>
-                <input type="text" id="profileName" name="profileName" required>
-                <br>
-                <label for="profileDescription">Description:</label>
-                <textarea id="profileDescription" name="profileDescription" required></textarea>
-                <br>
-                <input type="submit" value="Create Profile">
-            </form>
-        </section>
-
-        <!-- Section to Display and Review Profiles -->
-        <section id="profiles">
-            <h2>Profiles</h2>
-            <!-- Display profiles here. You might fetch and display these dynamically with JavaScript -->
-        </section>
+        <h1>Welcome to This Web!</h1>
+        <h1>News</h1>
+        <% newsData.forEach(item => { %>
+            <li>Title: <%= item.title %></li>
+            <% }); %>
+        <h1>Job</h1>
+        <% jobData.forEach(item => { %>
+            <li>Job Name: <%= item.Jobname %></li>
+         <% }); %>
+        <h1>Event</h1>
+        <% eventData.forEach(item => { %>
+            <li>Name: <%= item.eventname %></li>
+            <% }); %>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <!-- Add sections for community activities, forum statistics, etc. -->
-        <!-- Add links to rules/guidelines and social media sharing features -->
-    </footer>
 
     <script>
-        // Retrieve the username from localStorage
         const username = sessionStorage.getItem("username");
         document.addEventListener("DOMContentLoaded", function () {
-            // Replace this with your logic to fetch and update announcements.
             const announcementsSection = document.querySelector(".announcements");
             const announcementsContent = "Important announcement: Please read the forum rules. Don't put advertisement in replies.";
-
-            // Update the content in the Announcements Section
             announcementsSection.querySelector("p").textContent = announcementsContent;
         });
         if (username) {

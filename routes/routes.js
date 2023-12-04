@@ -9,9 +9,12 @@ router.use(
     saveUninitialized: true,
   })
 );
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
   if (req.session.username) {
-    res.render("homepage");
+    const eventData = await allData.getEvent();
+    const newsData = await allData.getNews();
+    const jobData = await allData.getJobs();
+    res.render("homepage",{eventData,newsData,jobData});
   }else if (req.session.adminname){
     res.render("admin");
   } else {
