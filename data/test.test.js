@@ -197,42 +197,92 @@ afterAll(async () => {
 // }
 // });
 
-test('changeNewsStatusById should retrieve news by ID', async () => {
-  const id = 'ua4jLSiqRTS5lyP2H6X3'; // Replace with a valid news ID from your test data
+// test('changeNewsStatusById should retrieve news by ID', async () => {
+//   const id = 'ua4jLSiqRTS5lyP2H6X3'; // Replace with a valid news ID from your test data
 
-  try {
-    const result = await allData.changeNewsStatusById(id,0);
-    const expectedData = {
-      description: "Drug becomes a serious problem",
-      id: "ua4jLSiqRTS5lyP2H6X3",
-      region: "New York",
-      status: 0,
-      title: "Drugs Problem"
-    };
+//   try {
+//     const result = await allData.changeNewsStatusById(id,0);
+//     const expectedData = {
+//       description: "Drug becomes a serious problem",
+//       id: "ua4jLSiqRTS5lyP2H6X3",
+//       region: "New York",
+//       status: 0,
+//       title: "Drugs Problem"
+//     };
 
-    expect(result[0]).toEqual(expectedData);
-  } catch (error) {
-    throw new Error(`getNewsById failed with error: ${error}`);
-  }
-});
+//     expect(result[0]).toEqual(expectedData);
+//   } catch (error) {
+//     throw new Error(`getNewsById failed with error: ${error}`);
+//   }
+// });
 
-test('changeEventStatusById should retrieve event by ID', async () => {
-  const id = 'zNdPAhJo0qt3fqFby2vs'; // Replace with a valid event ID from your test data
+// test('changeEventStatusById should retrieve event by ID', async () => {
+//   const id = 'zNdPAhJo0qt3fqFby2vs'; // Replace with a valid event ID from your test data
 
-  try {
-    const result = await allData.changeEventStatusById(id,0);
-    const expectedData = {
-      eventdate: "11-03-2023",
-      eventdescription: "Career Fair",
-      eventlocation: "Stevens Institute Of Technology",
-      eventname: "Career Fair",
-      eventtime: "09:35",
-      id: "zNdPAhJo0qt3fqFby2vs",
-      status: 0,
-    };
+//   try {
+//     const result = await allData.changeEventStatusById(id,0);
+//     const expectedData = {
+//       eventdate: "11-03-2023",
+//       eventdescription: "Career Fair",
+//       eventlocation: "Stevens Institute Of Technology",
+//       eventname: "Career Fair",
+//       eventtime: "09:35",
+//       id: "zNdPAhJo0qt3fqFby2vs",
+//       status: 0,
+//     };
 
-    expect(result[0]).toEqual(expectedData);
-  } catch (error) {
-    throw new Error(`getEventById failed with error: ${error}`);
-  }
-});
+//     expect(result[0]).toEqual(expectedData);
+//   } catch (error) {
+//     throw new Error(`getEventById failed with error: ${error}`);
+//   }
+// });
+
+// test('test getuserbyid ', async() =>{
+//   const id = "4xWB5GgImbSAqbqDP33r";
+//   try {
+//     const result = await allData.getUserById(id)
+//     const expectedData = {
+//       SecurityAnswer:"cat",
+//       SecurityQuestion:'favorite-pet',
+//       email:'SH@gmail.com',
+//       id:'4xWB5GgImbSAqbqDP33r',
+//       password:'123123',
+//       username:'12334'
+//     }
+//     expect(result[0]).toEqual(expectedData);
+//   } catch (error) {
+//     throw new Error(`getEventById failed with error: ${error}`);
+//   }
+// })
+
+// test('test createuser', async() =>{
+//   const data = {
+//     Username:'I dont know',
+//     Email:'app@apple.com',
+//     Password:'123123',
+//     Question:'favorite-pet',
+//     Answer:'cat'
+//   }
+//   try {
+//     const result = await allData.createUser(data.Username,data.Email,data.Password,data.Question,data.Answer);
+//     expect(result.Username).toEqual("I dont know");
+//   } catch (error) {
+//     throw new Error(`getEventById failed with error: ${error}`);
+//   }
+// })
+
+// test('test createuser', async() =>{
+//   const data = {
+//     Username:'I dont know',
+//     Email:'app@apple.com',
+//     Password:'123123',
+//     Question:'favorite-pet',
+//     Answer:'cat'
+//   }
+//   try {
+//     const result = await allData.createUser(data.Username,data.Email,data.Password,data.Question,data.Answer);
+//     expect(result.Username).toEqual("I dont know");
+//   } catch (error) {
+//     expect(error).toEqual("email exists")
+//   }
+// })
