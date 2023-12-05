@@ -753,6 +753,36 @@ async function changeNewsStatusById(id,Status) {
   }
 }
 
+async function getAdminJobs(){
+  try {
+    const JobsCol = collection(db, "jobs"); //get users collection
+    const jobs = await getDocs(JobsCol);
+    const joblist = jobs.docs.map((doc) => doc.data()); //convert to list type
+    return joblist
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    throw "No jobs Found";
+  }
+}
+
+async function changeJobStatusById(id,Status) {
+  try {
+    if (typeof id !== "string" && id.trim() === "") {
+      throw new Error("Invalid id");
+    }
+    if (Status !== 1 && Status !== 0){
+      throw new Error('Status should be 0 or 1. 0 means not published. 1 means published.')
+    }
+    await updateDoc(doc(db, "jobs", id), {
+      status:Status
+    });
+    return getJobById(id);
+  } catch (error) {
+    console.error("Error in changeJobStatusById:", error);
+    throw error;
+  }
+}
+
 
 
 module.exports = {
@@ -786,5 +816,7 @@ module.exports = {
   deleteNewsReview,
   getReviewByNewsId,
   getAdminNews,
-  changeNewsStatusById
+  changeNewsStatusById,
+  getAdminJobs,
+  changeJobStatusById
 };

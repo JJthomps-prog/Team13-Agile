@@ -16,7 +16,10 @@ router.get("/", async (req, res) => {
     const jobData = await allData.getJobs();
     res.render("homepage",{eventData,newsData,jobData});
   }else if (req.session.adminname){
-    res.render("admin");
+    const adminevent = await allData.getAdminEvent();
+    const adminnews = await allData.getAdminNews();
+    const adminjob = await allData.getAdminJobs();
+    res.render("admin",{adminevent,adminnews,adminjob});
   } else {
     res.redirect("/login");
   }
@@ -81,6 +84,28 @@ router.post("/categories/jobreview", async (req, res) => {
   const jobData = await allData.createJobReview(userid, jobid, review);
   //res.render("jobs", { jobData });
   return res.json(jobData);
+});
+
+router.post("/admins/changestatue", async (req, res) => {
+  const data = req.body;
+  const type = data.type
+  let datastatus = parseInt(data.status,10)
+  if (datastatus==1){
+    datastatus = 0
+  }else{
+    datastatus = 1
+  }
+  if(type == 'job'){
+    const jobid = data.jobid
+    jobs = await allData.changeJobStatusById(jobid,datastatus)
+  }else if (type == 'news'){
+    const newsid = data.newsid
+    news = await allData.changeNewsStatusById(newsid,datastatus)
+  }else if (type == 'event'){
+    const eventid = data.eventid
+    events = await allData.changeEventStatusById(eventid,datastatus)
+  }
+  res.redirect("/");
 });
 
 // Login Page

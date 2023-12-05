@@ -1,4 +1,56 @@
+<link rel="stylesheet" href="/css/admin.css">
 <div>
     <h1>Admin Page<a href="/logout">Logout</a></h1>
     <li><a href="/">Home</a></li>
+    <div id="content">
+        <h1>Welcome to This Web!</h1>
+        <h1>News</h1>
+        <% adminnews.forEach(item => { %>
+            <li>Title: <%= item.title %></li>
+            <li>Region: <%= item.region %></li>
+            <li>Description: <%= item.description %></li>
+            <li>NewsId: <%= item.id%></li>
+            <li>Status: <%= item.status%></li>
+            <form action="/admins/changestatue" method="post">
+                <input type="hidden" name="newsid" value="<%= item.id %>" />
+                <input type="hidden" name="type" value="news" />
+                <input type="hidden" name="status" value="<%= parseInt(item.status, 10) %>">
+                <button type="submit">Change Status</button>
+            </form>
+            <% }); %>
+        <h1>Job</h1>
+        <% adminjob.forEach(item => { %>
+            <li>Job Name: <%= item.Jobname %></li>
+            <p>Location: <%= item.Location %></p>
+            <p>Salary: <%= item.Salary %></p>
+            <p>Description: <%= item.Description %></p>
+            <p>Requirement: <%= item.Requirement %></p>
+            <p>Job Type: <%= item.Jobtype %></p>
+            <p>Job status: <%= item.Jobstatus %></p>
+            <p>JobId: <%= item.id%></p>
+            <p>Status: <%= item.status%></p>
+            <form action="/admins/changestatue" method="post">
+                <input type="hidden" name="jobid" value="<%= item.id %>" />
+                <input type="hidden" name="type" value="job" />
+                <input type="hidden" name="status" value="<%= parseInt(item.status, 10) %>">
+                <button type="submit">Change Status</button>
+            </form>
+         <% }); %>
+        <h1>Event</h1>
+        <% adminevent.forEach(item => { %>
+            <li>Name: <%= item.eventname %></li>
+            <li>Date: <%= item.eventdate %></li>
+            <li>Location: <%= item.eventlocation %></li>
+            <li>Time: <%= item.eventtime %></li>
+            <li>Description: <%= item.eventdescription %></li>
+            <li>EventId: <%= item.id%></li>
+            <li>Status: <%= item.status%></li>
+            <form action="/admins/changestatue" method="post">
+                <input type="hidden" name="eventid" value="<%= item.id %>" />
+                <input type="hidden" name="type" value="event" />
+                <input type="hidden" name="status" value="<%= parseInt(item.status, 10) %>">
+                <button type="submit">Change Status</button>
+            </form>
+            <% }); %>
+    </div>
 </div>
